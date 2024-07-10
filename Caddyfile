@@ -1,0 +1,5 @@
+:80 {
+    root * /var/www
+    encode gzip
+    file_server
+}

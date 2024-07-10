@@ -1,0 +1,52 @@
+html {
+  color: #fff;
+  background: #0F1113;
+  font-family: 'JetBrains Mono Medium', sans-serif;
+  /* background: #0F0F0F; */
+}
+
+body {
+  max-width: 900px;
+  margin: 1em auto;
+  padding: 1em;
+}
+
+nav {
+  padding-bottom: 0.5em;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 1em;
+}
+
+h1 a {
+  color: inherit;
+}
+
+section {
+  margin-top: 2em;
+}
+
+h2 {
+  margin-bottom: 0.5em;
+}
+
+p {
+  text-align: justify;
+  margin-bottom: 1em;
+}
+
+.deco {
+  color: #30fc82;
+  text-shadow: 0 0 3px #30fc82;
+}
+
+a {
+  color: #30fc82;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: square;
+}
