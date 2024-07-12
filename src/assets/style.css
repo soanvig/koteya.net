@@ -50,3 +50,10 @@ a:hover {
 ul {
   list-style: square;
 }
+
+footer {
+  display: block;
+  text-align: right;
+  margin-top: 2em;
+  color: #777;
+}

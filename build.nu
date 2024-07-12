@@ -15,7 +15,7 @@ def main [
 def build [] {
   print -n "Rebuilding... "
 
-  rm -rf $target;
+  rm -rf ./build/**/*
   mkdir $target;
 
   let pages = (ls src/pages/**/*.html);
