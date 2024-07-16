@@ -26,7 +26,10 @@ def build [] {
     let name = $page.name | str replace "src/pages/" "";
     let page_content = (open $path);
 
-    $template | str replace "{{page}}" $page_content | save $"($target)/($name)"
+    $template
+      | str replace "{{page}}" $page_content
+      | str replace "{{date}}" (date now | format date "%Y-%m-%d")
+      | save $"($target)/($name)"
   }
 
   cp ./src/assets/**/* ./build;

@@ -1,8 +1,15 @@
+:root {
+  --color-light: #fff;
+  --color-light-2: #ccc;
+  --color-medium: #777;
+  --color-dark: #0F1113;
+  --color-primary: #30fc82;
+}
+
 html {
-  color: #fff;
+  color: var(--color-light);
   background: #0F1113;
   font-family: 'JetBrains Mono Medium', sans-serif;
-  /* background: #0F0F0F; */
 }
 
 body {
@@ -11,10 +18,41 @@ body {
   padding: 1em;
 }
 
-nav {
-  padding-bottom: 0.5em;
-  border-bottom: 2px solid #ccc;
+.topbar {
+  border-bottom: 2px solid var(--color-light-2);
   margin-bottom: 1em;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu_item {
+  background: rgba(255, 255, 255, 0);
+  transition: all linear 0.15s;
+  color: var(--color-light);
+}
+
+.menu_item:hover, .menu_item:active {
+  background: rgba(255, 255, 255, 1);
+  color: #0F1113;
+}
+
+.menu_item a {
+  color: inherit;
+  display: block;
+  padding: 0.5em 1.5em;
+  text-decoration: none;
+}
+
+.menu_item a:hover {
+  text-decoration: none;
 }
 
 h1 a {
@@ -35,12 +73,12 @@ p {
 }
 
 .deco {
-  color: #30fc82;
-  text-shadow: 0 0 3px #30fc82;
+  color: var(--color-primary);
+  text-shadow: 0 0 3px var(--color-primary);
 }
 
 a {
-  color: #30fc82;
+  color: var(--color-primary);
 }
 
 a:hover {
@@ -55,5 +93,5 @@ footer {
   display: block;
   text-align: right;
   margin-top: 2em;
-  color: #777;
+  color: var(--color-medium);
 }

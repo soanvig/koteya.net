@@ -1,4 +1,4 @@
-:80 {
+koteya.net, :80 {
     root * /var/www
     encode gzip
     file_server
