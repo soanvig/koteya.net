@@ -1,0 +1,144 @@
+<h2>Thoughts on Nushell (Nu)</h2>
+
+<p>
+  <a href="https://nushell.sh">Nushell</a> (or <i>Nu</i>) is an alternative <a href="#shell">shell</a> for an operating system.
+
+  <small class="disclaimer">
+    Shell is an application used for interacting with an operating system, usually directly by the user using the text based interface (terminal).
+    It incorporates some sort of programming language that can be used to write programs directly in the shell.
+  </small>
+
+  It claims to provide ease of programming through its custom non-<a href="https://en.wikipedia.org/wiki/POSIX">POSIX</a> compliant language (more on that later). In this blog post I'll explain its basics, and share my thoughts on utilizing Nushell as a daily driver. Note, that the more I use it the more I like, so this blog post is also meant to convince the reader to try Nushell out.
+</p>
+
+<h3 id="basics">
+  <a href="#basics">#</a>The basics - structured data
+</h3>
+
+<p>
+  In typical shell like <i>Bash</i>, <i>zsh</i> or <i>Fish</i> commands execute and return their output to the shell, where it is further processed through a command <i>pipeline</i>, saved in variable or just printed to the console. Nushell takes similar approach here. <strong>The difference</strong> is in <em>what</em> commands accept as an input, and return as an output. In all POSIX compliant shells (and most non-POSIX like Fish) everything is a text - simple list of characters, that don't encode any structured data. Some information is computed in one program, then converted into text, and if piped to another program it's that program's job to decode that text information for further processing.
+</p>
+
+<p>
+  Let's see an example. I'll list root directory of that homepage using Bash:
+
+<code class="code-block">$ ls -l
+-rw-rw-r-- 1 user user   72 Jul 15 13:45 Caddyfile
+-rw-rw-r-- 1 user user   51 Jul 17 03:51 TODO.md
+drwxrwxr-x 3 user user 4096 Jul 17 04:39 build
+-n 1 user user  837 Jul 17 04:20 build.nu
+-rwxrwxr-x 1 user user  406 Jul 16 17:47 container.nu
+-rwxrwxr-x 1 user user  245 Jul 16 17:43 deploy.nu
+drwxrwxr-x 4 user user 4096 Jul 11 01:01 src
+</code>
+
+  If I would like to narrow that result to a file size (e.g. <span class="code">72</span>) and the file name (e.g. <span class="code">Caddyfile</span>) I would have to: 
+</p>
+
+<ol class="list">
+  <li>Divide output into lines (usually happens automatically)</li>
+  <li>Divide each line into columns (the output resembles table format)</li>
+  <li>Pick 5th and 9th column (knowing that these are the columns I'm interested in)</li>
+  <li>
+    Which finally would result in me using <i>awk</i> command to do the parsing: <span class="code">ls -l | awk '{printf "%s %s \n",$5,$9}'</span> (other approach can be taken to achieve the same result)
+
+    <small class="disclaimer">
+      Awk is a very powerful text-processing program usually used in such situations. In incorporates a programming language of its own.
+    </small>
+  </li>
+</ol>
+
+<p>
+  On the other hand if the data returned by <span class="code">ls -l</span> was structured in the first place (i.e. not simple text) it would already be divided into file entries (and not separate lines) that contain fields (and not arbitrary columns).
+</p>
+
+<p>
+  And that is exactly what Nushell is doing: has support for structured data. It starts by providing its own <span class="code">ls</span> command:
+
+<code class="code-block">> ls
+╭───┬──────────────┬──────┬─────────┬────────────────╮
+│ # │     name     │ type │  size   │    modified    │
+├───┼──────────────┼──────┼─────────┼────────────────┤
+│ 0 │ Caddyfile    │ file │    72 B │ 2 days ago     │
+│ 1 │ TODO.md      │ file │    51 B │ 2 hours ago    │
+│ 2 │ build        │ dir  │ 4.0 KiB │ 19 seconds ago │
+│ 3 │ build.nu     │ file │   837 B │ an hour ago    │
+│ 4 │ container.nu │ file │   406 B │ 11 hours ago   │
+│ 5 │ deploy.nu    │ file │   245 B │ 11 hours ago   │
+│ 6 │ src          │ dir  │ 4.0 KiB │ 6 days ago     │
+╰───┴──────────────┴──────┴─────────┴────────────────╯
+</code>
+
+  We can already see the benefits of structured data. Default Nushell's formatter can print us a nice table. Now we can pipe the output to <span class="code">each</span> function that will pick some fields from the table by referencing fields <strong>directly by name</strong>:
+
+<code class="code-block">> ls | each { echo $"($in.size) ($in.name)" }
+╭───┬────────────────────╮
+│ 0 │ 72 B Caddyfile     │
+│ 1 │ 51 B TODO.md       │
+│ 2 │ 4.0 KiB build      │
+│ 3 │ 837 B build.nu     │
+│ 4 │ 406 B container.nu │
+│ 5 │ 245 B deploy.nu    │
+│ 6 │ 4.0 KiB src        │
+╰───┴────────────────────╯
+</code>
+
+  The output is now formatted not as a table but a list. The code we wrote is more declarative and readable, and doesn't depend on arbitrary things like column separator and column order.
+</p>
+
+<h3 id="features">
+  <a href="#features">#</a>Features
+</h3>
+
+<p>
+  Before talking about Nushell's <a href="#pitfalls">pitfalls</a> I would like to quickly go through some of its features
+</p>
+
+<h4 id="features-repl">
+  <a href="#features-repl">#</a>Interactive shell (REPL)
+</h4>
+
+<p>As demonstrated above Nushell is very useful when used as interactive shell (directly in a terminal emulator) for writing simple scripts. The language is expressive, and with the structured data and helper functions it is easy (and somewhat intuitive) to get the results we expect. It also is able to display the results in pretty-printed format (colored and structured). On top of that it can integrate with command-completion systems (like <a href="https://github.com/carapace-sh/carapace-bin">Carapace</a>, or even Fish).</p>
+
+<code class="code-block"># convert all ogg files in music directory into mp3 using FFmpeg in parallel
+> ls ./music/**/*.ogg # glob listing works
+  | par-each { # built-in parallelism
+    # easy path manipulation
+    let output = ($in.name | path parse | $"($in.parent)/($in.stem).mp3");
+    ffmpeg -i $in.name $output;
+  }
+</code>
+
+<p>One of the most interesting features available to Nushell's REPL are <a href="https://www.nushell.sh/book/hooks.html">hooks</a>. They can run certain code in configured situations. One use-case that I think might be the most powerful is the ability to track environment variables changes (<span class="code">PWD</span> in particular) that allows to run code when entering or exiting a directory. It's up to one's imagination to find out how it can improve productivity. Check out Nushell's docs for more examples.</p>
+
+<h4 id="features-commands">
+  <a href="#features-commands">#</a>Built-in commands
+</h4>
+
+<p>Nushell has impressive number of <a href="https://www.nushell.sh/commands/">built-in commands</a> for writing shell programs. That includes:</p>
+
+<ul class="list">
+  <li>HTTP client: <code class="code">http get https://example.com/posts</code></li>
+  <li>Watch file changes: <code class="code">watch ./src {|| cargo check }</code></li>
+  <li>Hashing/checksums: <code class="code">open ./file | hash sha256</code></li>
+  <li>Random (various data types): <code class="code">random uuid</code></li>
+  <li>Glob: <code class="code">glob **/*.{rs,toml} --depth 2</code></li>
+  <li>Parsing popular formats (TOML, JSON, CSV etc.): <code class="code">open Cargo.toml | select package.edition</code></li>
+  <li>Coloring: <code class="code">print $"(ansi green)Success(ansi reset)"</code></li>
+</ul>
+
+<p>and a lot, lot more. It's truly battery-included. Besides what's provided, it also supports plugins, and has growing community <a href="https://github.com/nushell/nu_scripts">writing scripts</a>.</p>
+
+<h3 id="pitfalls">
+  <a href="#pitfalls">#</a>Pitfalls
+</h3>
+
+<p>
+  Nushell at current stage is not perfect. Its capabilities are impressive, but such number of features makes it harder to maintain.
+  This results in bugs that can appear after an upgrade, or some things simply not working consistently or as one may expect.
+</p>
+
+<p>
+  Nushell is not POSIX-compliant, so whatever you are used to in Linux/Mac is mostly useless, and you need to learn everything from scratch.
+  Although getting adjusted doesn't take a lot of time, it might be <em>really</em> annoying at first. There is another risk as well: integration with existing POSIX tools might not be straightforward. That being said Nushell provides good set of tools to convert unstructured data to a structured counterpart and vice versa.
+</p>

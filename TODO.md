@@ -1,0 +1,4 @@
+- [ ] blog tags system
+- [ ] grammar check on build
+- [ ] last update should be per file
+- [ ] automated header links
