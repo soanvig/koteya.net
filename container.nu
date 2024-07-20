@@ -9,5 +9,5 @@ def 'main dev' [] {
 }
 
 def 'main prod' [] {
-  podman run --replace -d --name koteya.net -v $"./Caddyfile:/etc/caddy/Caddyfile:Z" -v ./build:/var/www:Z -v ~/caddy_data:/data -v ~/caddy_config:/config -p 80:80 -p 443:443 docker.io/caddy
+  podman run --replace -d --name koteya.net -v $"./Caddyfile:/etc/caddy/Caddyfile:Z" -v ./build:/var/www:Z -v ~/caddy_data:/data -v ~/caddy_config:/config -p 80:80 -p 443:443 --restart always docker.io/caddy
 } 
