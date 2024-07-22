@@ -1,5 +1,5 @@
 - [ ] blog tags system
 - [ ] grammar check on build
-- [ ] last update should be per file
-- [ ] automated header links
-- [ ] build image locally and push it to the server using `podman image scp`
+- [x] last update should be per file
+- [x] automated header links
+- [x] build image locally and push it to the server using `podman image scp`

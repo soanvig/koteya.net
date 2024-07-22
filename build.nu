@@ -45,6 +45,10 @@ def get-file-date [file_path: string] string {
   git log -1 --pretty="format:%ci" $file_path | format date "%Y-%m-%d"
 }
 
+def get-header [level: string, id: string, text: string] string {
+  $"<($level) id=\"($id)\"><a href=\"#($id)\">#</a>($text)</($level)>"
+}
+
 def process_tokens [file_path: string] string -> string {
   $in | each-token {|token, ...rest|
     let result = match $token {
@@ -54,7 +58,8 @@ def process_tokens [file_path: string] string -> string {
         } else {
           get-file-date ($file_path | path dirname | path join $rest.0)
         }
-      }
+      },
+      "h1" | "h2" | "h3" | "h4" | "h5" | "h6" => (get-header $token $rest.0 $rest.1)
     }
 
     $result
@@ -101,9 +106,9 @@ def each-token [
 
       let replace_start = $token_range.0 - 1;
       let replace_end = $replace_start + ($token | str length) + 5;
-      let before_token = $updated_line | str substring ..$replace_start;
+      let before_token = if $replace_start == -1 { "" } else { $updated_line | str substring ..$replace_start; }
       let after_token = $updated_line | str substring $replace_end..;
-
+      
       $updated_line = $before_token + $replace_result + $after_token
     }
 
