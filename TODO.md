@@ -1,5 +1,6 @@
 - [ ] blog tags system
-- [ ] grammar check on build
+- [ ] grammar check on build (installed `aspell aspell-en`, example: `aspell -l en_US -H check ./src/pages/blog/cli.html`)
 - [x] last update should be per file
 - [x] automated header links
 - [x] build image locally and push it to the server using `podman image scp`
+- [ ] generate automated table of content
