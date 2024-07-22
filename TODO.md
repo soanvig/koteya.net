@@ -2,3 +2,4 @@
 - [ ] grammar check on build
 - [ ] last update should be per file
 - [ ] automated header links
+- [ ] build image locally and push it to the server using `podman image scp`

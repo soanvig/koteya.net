@@ -1,9 +1,8 @@
 #!/usr/bin/nu
 
 def main [] {
-  git push -f vps master
-  ssh vps git --work-tree=/home/mortimer/koteya.net --git-dir=/home/mortimer/koteya.net/.git checkout -f
-
-  ssh vps 'cd koteya.net; ./build.nu'
-  ssh vps 'cd koteya.net; ./container.nu prod'
+  ./build.nu
+  ./container.nu build
+  podman image scp koteya.net vps::
+  ssh vps 'podman run --replace -d --name koteya.net -v ~/Caddyfile:/etc/caddy/Caddyfile:Z -v ~/caddy_data:/data -v ~/caddy_config:/config -p 80:80 -p 443:443 --restart always localhost/koteya.net'
 }

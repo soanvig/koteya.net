@@ -52,7 +52,7 @@ def process_tokens [file_path: string] string -> string {
         if ($rest | is-empty) {
           get-file-date $file_path
         } else {
-          get-file-date (path join ($file_path | path dirname) $rest.0)
+          get-file-date ($file_path | path dirname | path join $rest.0)
         }
       }
     }
