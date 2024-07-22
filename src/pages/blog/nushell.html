@@ -142,3 +142,11 @@ drwxrwxr-x 4 user user 4096 Jul 11 01:01 src
   Nushell is not POSIX-compliant, so whatever you are used to in Linux/Mac is mostly useless, and you need to learn everything from scratch.
   Although getting adjusted doesn't take a lot of time, it might be <em>really</em> annoying at first. There is another risk as well: integration with existing POSIX tools might not be straightforward. That being said Nushell provides good set of tools to convert unstructured data to a structured counterpart and vice versa.
 </p>
+
+<p>
+  It's worth to say that despite having huge amount of processing functions, it still lacks some useful utilities (like advanced string matching or replacing string at given position), so fallbacking to programms like <code class="code">awk</code> might be necessary.
+</p>
+
+<p>Nushell's API is sometimes a bit too flexible, and sometimes not consistent, so it's very easy to make an error. For example what is the expected result of creating a list from: <code class="code">[1, 2 + 3]</code>? One could say it should be <code class="code">[1, 5]</code> however in reality it will be <code class="code">[1, 2, +, 3]</code>. It happens because commas are optional in list definition, and everything is treated as a string. To achieve desired result we have to convert addition into explit expression: <code class="code">[1, (2 + 3)]</code>. Note that space between added numbers is required, otherwise <code class="code">2+2</code> expression would be interpreted as a command of that name. Although <strong>Nushell is more secure than other shells</strong> it is still walking on thin ice - not because the shell is bad but because its language/API has number of problems. Hopefully they will be acknowledged and resolved.</p>
+
+<p>At the moment of writing that blogpost Nushell has <strong><a href="https://github.com/nushell/nushell/issues">over 1400 open issues</a></strong> while having 31000 stars. To me that ratio speaks for itself: it's one issue per 22 stars. In comparison <a href="https://github.com/fish-shell/fish-shell">Fish</a> (albeit more mature, but still providing a lot of functionality) has 425 issues with 25000 stars: that is one issue per 58 - over two times less issues.</p>
