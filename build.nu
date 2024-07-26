@@ -8,7 +8,7 @@ def main [
   build
 
   if $watch {
-    watch ./src {|| build}
+    watch ./html {|| build}
   }
 }
 
@@ -19,12 +19,12 @@ def build [] {
   rm -rf ./build/*
   mkdir $target;
 
-  let pages = (ls src/pages/**/*.html);
-  let template = (open src/template.html);
+  let pages = (ls html/pages/**/*.html);
+  let template = (open html/template.html);
 
   for $page in $pages {
     let path = $page.name;
-    let name = $page.name | str replace "src/pages/" "";
+    let name = $page.name | str replace "html/pages/" "";
     let page_content = (open $path);
     let dir = $"($target)/($name | path parse | $in.parent)";
 
@@ -36,7 +36,7 @@ def build [] {
       | save $"($target)/($name)"
   }
 
-  cp ./src/assets/**/* ./build;
+  cp ./html/assets/**/* ./build;
 
   print $"(ansi green)✓(ansi reset)"
 }
