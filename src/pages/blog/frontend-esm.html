@@ -1,0 +1,46 @@
+<h2>Frontend development with TypeScript and libraries, but no bundler</h2>
+
+<!-- Introduction -->
+
+{{h3|esm|ESM (ECMAScript modules)}}
+
+<p>
+  The first step to do is to use ES modules. 
+  In our <code class="code">index.html</code> file we create following content:
+
+  <code class="code-block">
+    &#x3C;script type=&#x22;module&#x22; src=&#x22;./main.mjs&#x22;&#x3E;&#x3C;/script&#x3E;
+  </code>
+
+  As you can see we are referencing <code class="code">main.mjs</code> file. The <code class="code">mjs</code> extension is a standard to identify ESM file. Also, the script tag has to have <code class="code">type="module"</code>.
+</p>
+
+<p>
+  Then, we create <code class="code">main.mjs</code> file, and <code class="code">hello-world.mjs</code> file (that we will import using ESM syntax in <code class="code">main.mjs</code> file).
+
+  <code class="code-block">// main.mjs
+import { helloWorld } from './hello-world.mjs';
+
+helloWorld();
+  </code>
+
+  <code class="code-block">// hello-world.mjs
+export const helloWorld = () => alert('Hello world!');
+  </code>
+</p>
+
+<p>
+  At this point, the last thing to do is to <i>serve</i> our <code class="code">index.html</code> file. Serving is necessary, because simply opening <code class="code">index.html</code> in the browser directly from the filesystem won't allow us to dynamically import our JavaScript. There are multiple ways to serve static site, however my chosen one for this article is <a href="https://www.npmjs.com/package/serve">serve</a> library:
+
+  <code class="code-block">pnpm add serve
+pnpm serve . // the directory where index.html can be found
+  </code>
+
+  Upon entering <code class="code">http://localhost:3000</code> (default <code class="code">serve</code> port) as expected, the alert is executed:
+
+  <!-- @TODO add image with alert -->
+</p>
+
+{{h3|typescript|TypeScript}}
+
+{{h3|libraries|Libraries}}
