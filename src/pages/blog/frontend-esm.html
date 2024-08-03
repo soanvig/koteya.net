@@ -1,6 +1,6 @@
 <h2>Frontend development with TypeScript and libraries, but no bundler</h2>
 
-<!-- Introduction -->
+<!-- @TODO Introduction -->
 
 {{h3|esm|ESM (ECMAScript modules)}}
 
@@ -36,11 +36,54 @@ export const helloWorld = () => alert('Hello world!');
 pnpm serve . // the directory where index.html can be found
   </code>
 
-  Upon entering <code class="code">http://localhost:3000</code> (default <code class="code">serve</code> port) as expected, the alert is executed:
+  Upon entering <code class="code">http://localhost:3000</code> (default <code class="code">serve</code> port) the alert is executed as expected:
 
   <!-- @TODO add image with alert -->
 </p>
 
 {{h3|typescript|TypeScript}}
 
+<p>Now, onto TypeScript, because as <em>sane people</em> we want our types in place. TypeScript supports ESM, but it requires few settings in <code class="code">tsconfig.json</code> in place:</p>
+
+<code class="code-block">// tsconfig.json
+{
+  ...
+  "compilerSettings": {
+    ...
+    @TODO
+    "outDir": "./build" // the directory where compiled JS file should be placed
+    ...
+  }
+  ...
+}
+</code>
+
+<p>
+  We also have to set application <i>type</i> to a <code class="code">module</code> in <code class="code">package.json</code>:
+
+<code class="code-block">// package.json
+{
+  ...
+  "type": "module",
+  ...
+}
+</code>
+</p>
+
+<p>Besides that, <strong>all files must have <code class="code">.mts</code> extension</strong> (just like they had to be .mjs instead of .js), so we have to convert existing file to that file extension.</p>
+
+<p>After applying all the changes we might now run <code class="code">pnpm tsc</code>, and have our code properly compiled from <code class="code">.mts</code> to <code class="code">.mjs</code> files, effectively ending up with the same structure we had at the end of the first part of this blogpost.</p>
+
 {{h3|libraries|Libraries}}
+
+<p>At some point any project will require usage of some sort of a library. We want our libraries to be available on the page displayed in the browser, in our own code, <strong>and also in TypeScript code alongside library's types</strong>. Normally one uses a bundler (<i>Vite/Rollup</i>, <i>Webpack</i>) to <i>bundle</i> our code and dependencies (installed through package manager) together into something usable by the browser. The best part is: <strong>for simple website we don't need a bundler</strong>.</p>
+
+<p>Let's take a look at how browser can have access to an external library.</p>
+
+<p>Library is usually just plain JS code. Browser understands it. The problem starts with making the browser <em>see</em> library's code, and thus our code seeing the library's code. So firstly we have to discover how do we get libraries:</p>
+
+<ul class="list">
+  <li>Install library using package manager, and bundle it using bundler</li>
+  <li>Install library using package manager, and import it from `node_modules` using script tag</li>
+  <li>Import library from online source using script tag</li>
+</ul>
