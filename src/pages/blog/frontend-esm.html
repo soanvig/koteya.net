@@ -19,7 +19,7 @@
   Then, we create <code class="code">main.mjs</code> file, and <code class="code">hello-world.mjs</code> file (that we will import using ESM syntax in <code class="code">main.mjs</code> file).
 
   <code class="code-block">// main.mjs
-import { helloWorld } from './hello-world.mjs';
+import { helloWorld } from './hello-world.mjs'; // the extension here is required
 
 helloWorld();
   </code>
@@ -43,47 +43,63 @@ pnpm serve . // the directory where index.html can be found
 
 {{h3|typescript|TypeScript}}
 
-<p>Now, onto TypeScript, because as <em>sane people</em> we want our types in place. TypeScript supports ESM, but it requires few settings in <code class="code">tsconfig.json</code> in place:</p>
+Now, the TypeScript. To have TypeScript working in the browser, we first have to have it working with ESM at all.
+
+For that, we are going to modify <code class="code">tsconfig.json</code>:
 
 <code class="code-block">// tsconfig.json
 {
-  ...
-  "compilerSettings": {
-    ...
-    @TODO
-    "outDir": "./build" // the directory where compiled JS file should be placed
+  "compilerOptions": {
+    ...,
+    "module": "NodeNext", // Set support for ESM
+    "outDir": "./public", // Set output directory, from which we are going to serve our JS files 
     ...
   }
-  ...
 }
 </code>
 
-<p>
-  We also have to set application <i>type</i> to a <code class="code">module</code> in <code class="code">package.json</code>:
+Then, the <code class="code">package.json</code>:
 
 <code class="code-block">// package.json
 {
-  ...
+  ...,
   "type": "module",
   ...
 }
 </code>
-</p>
 
-<p>Besides that, <strong>all files must have <code class="code">.mts</code> extension</strong> (just like they had to be .mjs instead of .js), so we have to convert existing file to that file extension.</p>
+And finally we have to convert our files' extension from <code class="code">mjs</code> to <code class="code">mts</code>.
 
-<p>After applying all the changes we might now run <code class="code">pnpm tsc</code>, and have our code properly compiled from <code class="code">.mts</code> to <code class="code">.mjs</code> files, effectively ending up with the same structure we had at the end of the first part of this blogpost.</p>
+At this point, after running <code class="code">tsc</code> compiler, we should get our <code class="code">public</code> directory populated with <code class="code">mjs</code> files ready to be imported in the browser as described in the previous section.
 
 {{h3|libraries|Libraries}}
 
-<p>At some point any project will require usage of some sort of a library. We want our libraries to be available on the page displayed in the browser, in our own code, <strong>and also in TypeScript code alongside library's types</strong>. Normally one uses a bundler (<i>Vite/Rollup</i>, <i>Webpack</i>) to <i>bundle</i> our code and dependencies (installed through package manager) together into something usable by the browser. The best part is: <strong>for simple website we don't need a bundler</strong>.</p>
+If one is using a bundler, all the libraries installed via package manager, and imported into source code, will be automatically <i>bundled</i> into JavaScript code. Without a bundler it has to be done <em>manually</em>.
 
-<p>Let's take a look at how browser can have access to an external library.</p>
+Upon installing a library we have to navigate to <code class="code">node_modules/_library_name_</code> directory. We should look for a compiled/bundled version of the library. Most of the libraries provide such a version, but not all of them - <strong>this is the major first issue we are going to encounter</strong>. We have to copy that already bundled source code into our directory that will be serving JS files for a browser.
 
-<p>Library is usually just plain JS code. Browser understands it. The problem starts with making the browser <em>see</em> library's code, and thus our code seeing the library's code. So firstly we have to discover how do we get libraries:</p>
+I personally wrote a simple build script that runs TypeScript compilation, copies all the libraries etc.
 
-<ul class="list">
-  <li>Install library using package manager, and bundle it using bundler</li>
-  <li>Install library using package manager, and import it from `node_modules` using script tag</li>
-  <li>Import library from online source using script tag</li>
-</ul>
+In our code we are probably using libraries in following format:
+
+<code class="code-block">import { groupBy } from 'lodash';</code>
+
+This code will be used by a browser, but the browser doesn't know what <code class="code">lodash</code> means. It will fail on importing it. It cannot resolve <code class="code">node_modules</code> like NodeJS do.
+
+For that we use <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap">importmap</a> in our HTML:
+
+<code class="code-block">// index.html
+&lt;script type="importmap"&gt;
+  {
+    "imports": {
+      "lodash": "./lodash.min.js",
+    }
+  }
+&lt;/script&gt;
+</code>
+
+This will tell the browser, than whenever it is instructed to import <code class="code">lodash</code>, it should in fact load local path: <code class="code">./lodash.min.js</code>.
+
+{{h4|libraries-ts|Libraries with TypeScript}}
+
+@TODO
