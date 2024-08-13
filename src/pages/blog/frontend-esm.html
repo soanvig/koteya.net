@@ -51,7 +51,7 @@ For that, we are going to modify <code class="code">tsconfig.json</code>:
 {
   "compilerOptions": {
     ...,
-    "module": "NodeNext", // Set support for ESM
+    "module": "ESNext", // Set support for ESM
     "outDir": "./public", // Set output directory, from which we are going to serve our JS files 
     ...
   }
@@ -101,5 +101,23 @@ For that we use <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Eleme
 This will tell the browser, than whenever it is instructed to import <code class="code">lodash</code>, it should in fact load local path: <code class="code">./lodash.min.js</code>.
 
 {{h4|libraries-ts|Libraries with TypeScript}}
+
+Now, TypeScript might not work with libraries. For <code class="code">ESNext</code> modules (TypeScript configuration) it doesn't know where to look for them - they have to work in the browser which has different import resolution that TypeScript cannot automatically reason about.
+
+But wait, we are already handling module resolution via <code class="code">importmap</code>! That means we need TypeScript to be able to resolve only typing. And we can do it using <code class="code">paths</code> in the <code class="code">tsconfig.json</code> file:
+
+<code class="code-block">// tsconfig.json
+{
+  "paths": {
+    "lodash": ["./node_modules/lodash/index.d.ts"], // or something similar
+  }
+}
+</code>
+
+Now, whenever we import <code class="code">lodash</code>, TypeScript will know where its declaration file is.
+
+Because paths corelate with <code class="code">importmap</code>, they will be extremely useful when our app grows.
+
+{{h3|summary|Summary}}
 
 @TODO
