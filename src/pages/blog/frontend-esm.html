@@ -1,6 +1,6 @@
 <h2>Frontend development with TypeScript and libraries, but no bundler</h2>
 
-<p><a href="https://vitejs.dev/">Vite</a>, <a href="https://webpack.js.org/">Webpack</a>, <a href="https://parceljs.org/">Parcel</a>, <a href="https://esbuild.github.io/">esbuild</a>, <a href="https://rollupjs.org/">Rollup</a>, and many more. How many tools one has to know to build a frontend application? What if those tools are not necessary? What a simple frontend application could be created without those tools?
+<p><a href="https://vitejs.dev/">Vite</a>, <a href="https://webpack.js.org/">Webpack</a>, <a href="https://parceljs.org/">Parcel</a>, <a href="https://esbuild.github.io/">esbuild</a>, <a href="https://rollupjs.org/">Rollup</a>, and many more. How many tools one has to know to build a frontend application? What if those tools are not necessary? What if a simple frontend application could be created without those tools?
 Let's see how.</p>
 
 {{h3|esm|ESM (ECMAScript modules)}}
@@ -118,6 +118,33 @@ pnpm serve . // the directory where index.html can be found
 <p>Now, whenever we import <code class="code">lodash</code>, TypeScript will know where its declaration file is.</p>
 
 <p>Because paths corelate with <code class="code">importmap</code>, they will be extremely useful when our app grows.</p>
+
+{{h3|esm-sh|esm.sh}}
+
+<p>I almost forgot to mention that there is a CDN for ESM libraries called <a href="https://esm.sh/#docs">esm.sh</a> that allows you to write imports using HTTP protocol.</p>
+
+<code class="code-block language-js"> // koteya.net syntax highlighting
+import { common, createStarryNight } from 'https://esm.sh/@wooorm/starry-night@3?bundle';
+import { toDom } from 'https://esm.sh/hast-util-to-dom@4?bundle';
+
+const starryNight = await createStarryNight(common)
+const prefix = 'language-'
+
+const nodes = Array.from(document.body.querySelectorAll('code.code-block'))
+
+for (const node of nodes) {
+  const className = Array.from(node.classList).find(function (d) {
+    return d.startsWith(prefix)
+  })
+  if (!className) continue
+  const scope = starryNight.flagToScope(className.slice(prefix.length))
+  if (!scope) continue
+  const tree = starryNight.highlight(node.textContent, scope)
+  node.replaceChildren(toDom(tree, {fragment: true}))
+}
+</code>
+
+<p>It might <strong>very</strong> useful for <code class="code">importmap</code>, but I haven't tested it yet.</p>
 
 {{h3|summary|Summary}}
 

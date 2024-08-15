@@ -4,5 +4,5 @@
 - [x] automated header links
 - [x] build image locally and push it to the server using `podman image scp`
 - [ ] generate automated table of content
-- [ ] add syntax highlighting
+- [x] add syntax highlighting
 - [ ] add simpler way of escaping HTML for code blocks
