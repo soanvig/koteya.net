@@ -1,6 +1,7 @@
 <h2>Frontend development with TypeScript and libraries, but no bundler</h2>
 
-<!-- @TODO Introduction -->
+<a href="https://vitejs.dev/">Vite</a>, <a href="https://webpack.js.org/">Webpack</a>, <a href="https://parceljs.org/">Parcel</a>, <a href="https://esbuild.github.io/">esbuild</a>, <a href="https://rollupjs.org/">Rollup</a>, and many more. How many tools one has to know to build a frontend application? What if those tools are not necessary? What a simple frontend application could be created without those tools?
+Let's see how.
 
 {{h3|esm|ESM (ECMAScript modules)}}
 
@@ -37,8 +38,6 @@ pnpm serve . // the directory where index.html can be found
   </code>
 
   Upon entering <code class="code">http://localhost:3000</code> (default <code class="code">serve</code> port) the alert is executed as expected:
-
-  <!-- @TODO add image with alert -->
 </p>
 
 {{h3|typescript|TypeScript}}
@@ -120,4 +119,4 @@ Because paths corelate with <code class="code">importmap</code>, they will be ex
 
 {{h3|summary|Summary}}
 
-@TODO
+I'm not saying that bundlers are not useful, they certainly are. They manage assets, are usually bullet-proof, offer hot reloading, optimizations etc. But sometimes they are introduced when there is no actual need for them. Sometimes it's just enough to use things introduced by web standards only. The solution presented above <em>works</em>, but in certain cases it might be annoying (like in RxJS library case, which offers ESM build that you can copy, but it is invalid - it is not single-file build, and relative imports don't have extensions in paths, which makes that build unusuable for web). One might have to think hard around problems. There is beauty in that minimalistic approach, but it might not be for everyone. Hopefully JavaScript ecosystem and web standards will evolve to a point, when there will be no drawbacks, and all of that complex tooling will become obsolete.
