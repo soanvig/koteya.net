@@ -94,7 +94,7 @@ drwxrwxr-x 4 user user 4096 Jul 11 01:01 src
 
 <p>As demonstrated above Nushell is very useful when used as interactive shell (directly in a terminal emulator) for writing simple scripts. The language is expressive, and with the structured data and helper functions it is easy (and somewhat intuitive) to get the results we expect. It also is able to display the results in pretty-printed format (colored and structured). On top of that it can integrate with command-completion systems (like <a href="https://github.com/carapace-sh/carapace-bin">Carapace</a>, or even Fish).</p>
 
-<code class="code-block"># convert all ogg files in music directory into mp3 using FFmpeg in parallel
+<code class="code-block language-nushell"># convert all ogg files in music directory into mp3 using FFmpeg in parallel
 > ls ./music/**/*.ogg # glob listing works
   | par-each { # built-in parallelism
     # easy path manipulation
