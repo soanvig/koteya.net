@@ -10,6 +10,8 @@
 html {
   color: var(--color-light);
   background: var(--color-dark);
+  background-image: url('./what-the-hex-dark.png');
+  background-attachment: fixed;
   font-family: sans-serif;
 }
 
