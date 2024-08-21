@@ -5,4 +5,4 @@
 - [x] build image locally and push it to the server using `podman image scp`
 - [ ] generate automated table of content
 - [x] add syntax highlighting
-- [ ] add simpler way of escaping HTML for code blocks
+- [x] add simpler way of escaping HTML for code blocks

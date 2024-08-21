@@ -40,7 +40,7 @@
     const starryNight = await createStarryNight(common)
     const prefix = 'language-'
 
-    const nodes = Array.from(document.body.querySelectorAll('code.code-block'))
+    const nodes = Array.from(document.body.querySelectorAll('code'))
 
     for (const node of nodes) {
       const className = Array.from(node.classList).find(function (d) {

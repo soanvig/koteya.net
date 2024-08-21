@@ -19,20 +19,23 @@ def build [] {
   rm -rf ./build/*
   mkdir $target;
 
-  let pages = (ls src/pages/**/*.html);
+  let pages = (glob src/pages/**/*.{html,md}) | path relative-to (pwd);
   let template = (open src/template.html);
 
-  for $page in $pages {
-    let path = $page.name;
-    let name = $page.name | str replace "src/pages/" "";
-    let page_content = (open $path);
+  for $path in $pages {
+    let name = $path | str replace "src/pages/" "" | str replace ".md" ".html";
     let dir = $"($target)/($name | path parse | $in.parent)";
 
     mkdir $dir;
 
+    let page_content = (open $path)
+      | process_tokens $path
+      | md_to_html $path;
+
     $template
       | str replace "{{page}}" $page_content
       | process_tokens $path
+      | md_to_html $path
       | save $"($target)/($name)"
   }
 
@@ -42,11 +45,25 @@ def build [] {
 }
 
 def get-file-date [file_path: string] string {
-  git log -1 --pretty="format:%ci" $file_path | format date "%Y-%m-%d"
+  let date = git log -1 --pretty="format:%ci" $file_path;
+
+  if ($date | | str length) == 0 {
+    date now | format date "%Y-%m-%d" 
+  } else {
+    $date | format date "%Y-%m-%d"
+  }
 }
 
 def get-header [level: string, id: string, text: string] string {
   $"<($level) id=\"($id)\"><a href=\"#($id)\">#</a>($text)</($level)>"
+}
+
+def md_to_html [file_path: string] string -> string {
+  if ($file_path | str ends-with '.md') {
+    $in | comrak --syntax-highlighting none --unsafe
+  } else {
+    $in
+  }
 }
 
 def process_tokens [file_path: string] string -> string {
