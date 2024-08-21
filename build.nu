@@ -39,7 +39,8 @@ def build [] {
       | save $"($target)/($name)"
   }
 
-  cp ./src/assets/**/* ./build;
+  mkdir ./build/assets
+  cp -r ./src/assets/* ./build/assets;
 
   print $"(ansi green)✓(ansi reset)"
 }

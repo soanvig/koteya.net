@@ -2,4 +2,7 @@ koteya.net, :80 {
     root * /var/www
     encode gzip
     file_server
+
+    header /assets/* Cache-Control max-age=604800
+    header ?Cache-Control nocache
 }

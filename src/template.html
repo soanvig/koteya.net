@@ -12,11 +12,17 @@
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/reset.css">
-  <link rel="stylesheet" href="/style.css">
-  <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@3/style/dark.css">
+
+  <link rel="stylesheet" href="/assets/reset.css">
+  <link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,500;1,500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,500;1,500&display=swap"></noscript>
+
+  <link rel="preload" href="https://esm.sh/@wooorm/starry-night@3/style/dark.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@3/style/dark.css"></noscript>
 </head>
 <body>
   <nav class="topbar">
@@ -33,25 +39,27 @@
     Last update of that page: {{date}}
   </footer>
 
-  <script type="module">
+  <script async defer type="module">
     import { common, createStarryNight } from 'https://esm.sh/@wooorm/starry-night@3?bundle';
     import { toDom } from 'https://esm.sh/hast-util-to-dom@4?bundle';
 
-    const starryNight = await createStarryNight(common)
-    const prefix = 'language-'
+    window.addEventListener('load', async () => {
+      const starryNight = await createStarryNight(common)
+      const prefix = 'language-'
 
-    const nodes = Array.from(document.body.querySelectorAll('code'))
+      const nodes = Array.from(document.body.querySelectorAll('code'))
 
-    for (const node of nodes) {
-      const className = Array.from(node.classList).find(function (d) {
-        return d.startsWith(prefix)
-      })
-      if (!className) continue
-      const scope = starryNight.flagToScope(className.slice(prefix.length))
-      if (!scope) continue
-      const tree = starryNight.highlight(node.textContent, scope)
-      node.replaceChildren(toDom(tree, {fragment: true}))
-    }
+      for (const node of nodes) {
+        const className = Array.from(node.classList).find(function (d) {
+          return d.startsWith(prefix)
+        })
+        if (!className) continue
+        const scope = starryNight.flagToScope(className.slice(prefix.length))
+        if (!scope) continue
+        const tree = starryNight.highlight(node.textContent, scope)
+        node.replaceChildren(toDom(tree, {fragment: true}))
+      }
+    });
   </script>
 </body>
 </html>
