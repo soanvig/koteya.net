@@ -101,7 +101,16 @@ h2, h3, h4, h5 {
     font-size: 0.9em;
   }
   
-  pre code {
+  code {
+    display: inline-block;
+    border: 1px solid var(--color-medium);
+    border-radius: 0.25em;
+    padding: 0.2em 0.5em;
+    font-size: 0.9em;
+    line-height: 1;
+  }
+
+  pre {
     display: block;
     overflow-y: auto;
     line-height: 1.5;
@@ -110,17 +119,11 @@ h2, h3, h4, h5 {
     padding: 1em;
     border: 0;
   }
-  
-  code {
+
+  pre, code {
     font-family: 'JetBrains Mono Medium', monospace;
-    display: inline-block;
     background: var(--color-dark-2);
     color: var(--color-light-2);
-    border: 1px solid var(--color-medium);
-    border-radius: 0.25em;
-    padding: 0.2em 0.5em;
-    font-size: 0.9em;
-    line-height: 1;
   }
 
   a {

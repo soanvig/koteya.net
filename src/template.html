@@ -47,16 +47,13 @@
 
     window.addEventListener('load', async () => {
       const starryNight = await createStarryNight(common)
-      const prefix = 'language-'
 
-      const nodes = Array.from(document.body.querySelectorAll('code'))
+      const nodes = Array.from(document.body.querySelectorAll('pre[lang]'))
 
       for (const node of nodes) {
-        const className = Array.from(node.classList).find(function (d) {
-          return d.startsWith(prefix)
-        })
-        if (!className) continue
-        const scope = starryNight.flagToScope(className.slice(prefix.length))
+        const lang = node.attributes.getNamedItem('lang')
+        if (!lang) continue
+        const scope = starryNight.flagToScope(lang.value)
         if (!scope) continue
         const tree = starryNight.highlight(node.textContent, scope)
         node.replaceChildren(toDom(tree, {fragment: true}))
