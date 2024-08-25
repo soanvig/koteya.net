@@ -35,7 +35,6 @@ def build [] {
     $template
       | str replace "{{page}}" $page_content
       | process_tokens $path
-      | md_to_html $path
       | save $"($target)/($name)"
   }
 
