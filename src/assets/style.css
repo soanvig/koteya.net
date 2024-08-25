@@ -32,6 +32,11 @@ body {
   font-family: 'JetBrains Mono Medium', monospace;
 }
 
+.deco {
+  color: var(--color-primary);
+  text-shadow: 0 0 3px var(--color-primary);
+}
+
 .menu {
   display: flex;
   list-style: none;
@@ -84,37 +89,61 @@ h2, h3, h4, h5 {
   }
 }
 
-p {
-  text-align: justify;
-  margin-bottom: 1em;
-  line-height: 2;
-}
+.content {
+  p {
+    text-align: justify;
+    margin-bottom: 1em;
+    line-height: 2;
+  }
+  
+  .disclaimer {
+    line-height: 1.5;
+    font-size: 0.9em;
+  }
+  
+  pre code {
+    display: block;
+    overflow-y: auto;
+    line-height: 1.5;
+    font-size: 1em;
+    margin: 2em 0;
+    padding: 1em;
+    border: 0;
+  }
+  
+  code {
+    font-family: 'JetBrains Mono Medium', monospace;
+    display: inline-block;
+    background: var(--color-dark-2);
+    color: var(--color-light-2);
+    border: 1px solid var(--color-medium);
+    border-radius: 0.25em;
+    padding: 0.2em 0.5em;
+    font-size: 0.9em;
+    line-height: 1;
+  }
 
-.disclaimer {
-  line-height: 1.5;
-  font-size: 0.9em;
-}
-
-pre code {
-  display: block;
-  overflow-y: auto;
-  line-height: 1.5;
-  font-size: 1em;
-  margin: 2em 0;
-  padding: 1em;
-  border: 0;
-}
-
-code {
-  font-family: 'JetBrains Mono Medium', monospace;
-  display: inline-block;
-  background: var(--color-dark-2);
-  color: var(--color-light-2);
-  border: 1px solid var(--color-medium);
-  border-radius: 0.25em;
-  padding: 0.2em 0.5em;
-  font-size: 0.9em;
-  line-height: 1;
+  a {
+    color: var(--color-primary);
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  ul {
+    list-style: square;
+  }
+  
+  ol, ul {
+    margin-bottom: 1em;
+  }
+  
+  ol, ul {
+    li:not(:last-child)  {
+      margin-bottom: 0.5em;
+    }
+  }
 }
 
 /** body content width plus disclaimer width */
@@ -136,33 +165,6 @@ code {
     margin-top: 1em;
     margin-bottom: 1em;
     opacity: 0.7;
-  }
-}
-
-.deco {
-  color: var(--color-primary);
-  text-shadow: 0 0 3px var(--color-primary);
-}
-
-a {
-  color: var(--color-primary);
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-ul {
-  list-style: square;
-}
-
-ol, ul {
-  margin-bottom: 1em;
-}
-
-ol, ul {
-  li:not(:last-child)  {
-    margin-bottom: 0.5em;
   }
 }
 

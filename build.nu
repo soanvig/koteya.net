@@ -61,7 +61,7 @@ def get-header [level: string, id: string, text: string] string {
 
 def md_to_html [file_path: string] string -> string {
   if ($file_path | str ends-with '.md') {
-    $in | comrak --syntax-highlighting none --unsafe
+    $in | comrak --syntax-highlighting none --unsafe --gfm
   } else {
     $in
   }
