@@ -1,0 +1,6 @@
+{
+	"devDependencies": {
+		"zx": "^8.2.4",
+		"serve": "^14.2.4"
+	}
+}
