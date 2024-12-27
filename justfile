@@ -15,7 +15,7 @@ deploy-vps: build container-build
   podman image scp koteya.net vps::
   ssh vps 'podman run --replace -d --name koteya.net -v ~/caddy_data:/data -v ~/caddy_config:/config -p 80:80 -p 443:443 --restart always localhost/koteya.net'\
 
-# Requires: gcloud and gcloud credential helper
+# Requires: gcloud and gcloud credential helper, should be run inside nix-shell
 deploy-gcloud: build
   docker build -f Containerfile -t europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net:latest .
   docker push europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net

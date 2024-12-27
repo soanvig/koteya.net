@@ -1,4 +1,6 @@
-koteya.net, :80 {
+# with koteya.net it doesn't work on Google Cloud Run
+# koteya.net, :80 {
+:80 {
     root * /var/www
     encode gzip
     file_server
