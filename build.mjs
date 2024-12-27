@@ -15,7 +15,17 @@ const build = async () => {
     const content = await fs.readFile(pagePath, 'utf-8');
     const withParsedTokens = replaceTokens({ content, filePath: pagePath });
     const withHtml = await mdToHtml({ content: withParsedTokens, filePath: pagePath });
-    const withTemplate = template.replace('{{page}}', () => withHtml); // fn to avoid $& replacement pattern
+    const withTemplate = template
+      .replace('{{page}}', () => withHtml) // fn to avoid $& replacement pattern
+      .replace('{{templateTitle}}', () => {
+        const pageTitle = getBlogPageTitle({ filePath: pagePath });
+
+        if (pageTitle) {
+          return `${pageTitle} - koteya.net`;
+        } else {
+          return `koteya.net`;
+        }
+      });
     const final = replaceTokens({ content: withTemplate, filePath: pagePath });
 
     await fs.writeFile(path.join(target, fileName), final, 'utf-8');
@@ -48,6 +58,10 @@ const replaceTokens = ({ content, filePath }) => {
         assert(args.length === 0);
 
         return getTableOfContent({ content });
+      case 'blogTitle':
+        assert(args.length === 1)
+
+        return getBlogPageTitle({ filePath: path.join(path.dirname(filePath), args[0]) });
       case 'h1':
       case 'h2':
       case 'h3':
@@ -121,6 +135,17 @@ const getTableOfContent = ({ content }) => {
 }
 
 const trimTemplateString = (input) => input.split('\n').map(line => line.trimStart()).join('\n');
+
+const getBlogPageTitle = ({ filePath }) => {
+  if (!filePath.endsWith('.md')) {
+    return '';
+  }
+
+  const prefix = '## ';
+  const { stdout: header } = $.sync`grep -m 1 ${prefix} ${filePath}`;
+
+  return header.replace(prefix, '').trim();
+}
 
 const mdToHtml = async ({ content, filePath }) => {
   if (filePath.endsWith('.md')) {
