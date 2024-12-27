@@ -11,11 +11,15 @@ container-build:
   podman build -t koteya.net .
 
 # Requires: podman system connection add --identity ~/.ssh/id_rsa vps ssh://mortimer@192.168.1.106:22
-deploy:
-  just build
-  just container-build
+deploy-vps: build container-build
   podman image scp koteya.net vps::
-  ssh vps 'podman run --replace -d --name koteya.net -v ~/caddy_data:/data -v ~/caddy_config:/config -p 80:80 -p 443:443 --restart always localhost/koteya.net'
+  ssh vps 'podman run --replace -d --name koteya.net -v ~/caddy_data:/data -v ~/caddy_config:/config -p 80:80 -p 443:443 --restart always localhost/koteya.net'\
+
+# Requires: gcloud and gcloud credential helper
+deploy-gcloud: build
+  docker build -f Containerfile -t europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net:latest .
+  docker push europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net
+  gcloud run deploy koteyanet --port=80 --region=europe-west4 --image=europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net
 
 serve:
   pnpm serve ./build
