@@ -7,7 +7,7 @@ build:
 container-dev:
   podman run --replace -d --name koteya.net -v $"./Caddyfile:/etc/caddy/Caddyfile:Z" -v ./build:/var/www:Z -p 8080:80 docker.io/caddy
 
-container-build:
+container-build: build
   podman build -t koteya.net .
 
 # Requires: podman system connection add --identity ~/.ssh/id_rsa vps ssh://mortimer@192.168.1.106:22
@@ -16,9 +16,10 @@ deploy-vps: build container-build
   ssh vps 'podman run --replace -d --name koteya.net -v ~/caddy_data:/data -v ~/caddy_config:/config -p 80:80 -p 443:443 --restart always localhost/koteya.net'\
 
 # Requires: gcloud and gcloud credential helper, should be run inside nix-shell
-deploy-gcloud: build
-  docker build -f Containerfile -t europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net:latest .
-  docker push europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net
+deploy-gcloud: build container-build
+  gcloud auth print-access-token --quiet | podman login -u oauth2accesstoken --password-stdin europe-west4-docker.pkg.dev
+  podman tag koteya.net europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net:latest
+  podman push europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net
   gcloud run deploy koteyanet --port=80 --region=europe-west4 --image=europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net
 
 serve:
