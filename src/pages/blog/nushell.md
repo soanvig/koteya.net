@@ -1,5 +1,7 @@
 ## Thoughts on Nushell (Nu)
 
+{{toc}}
+
 [Nushell](https://nushell.sh) (or *Nu*) is an alternative shell for an operating system.
 
 <small class="disclaimer">

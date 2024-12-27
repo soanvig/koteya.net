@@ -1,5 +1,7 @@
 ## My journey of daily-driving NixOS
 
+{{toc}}
+
 I decided to switch from [Void Linux](https://voidlinux.org/) I've been using for years.
 I was running it first on X11 with bspwm (tiling window manager), then Wayland with Hyprland (another tiling window manager).
 The most important piece of a puzzle here is that I am disappointed Nvidia GPU user. Nvidia is well known in Linux community as being not Linux friendly. [Nvidia, fuck you!](https://www.youtube.com/watch?v=OF_5EKNX0Eg).
@@ -16,7 +18,7 @@ To answer the former I had to personally test it. So I spun virtual machine with
 
 Fallen in love immediately.
 
-### Initial experience
+{{h3|initial-experience|Initial experience}}
 
 First and foremost I had to forget everything I knew about managing Linux based systems, and learn everything anew.
 I wanted at least 90% things decided by the configuration file (`/etc/nixos/configuration.nix`), treating the rest as rather "non-important" parts of configuration, which can be easily reproduced on my other machine if needed.
@@ -132,7 +134,7 @@ At this point everything looks very nice (even if navigating Nix syntax, all pac
 
 Actually: right. I decided to go bare-metal, copied over configuration file, rebuilt, and... I could continue from where I left on virtual machine. Quite impressive if you ask me.
 
-### Managing configuration file
+{{h3|managing-configuration-file|Managing configuration file}}
 
 Now having working desktop configuration I had to decide how to approach having the same but slightly different configuration on my laptop. Here comes another **awesome** thing: you can just check other people configurations, and see in entirety how their systems are configured. And there is even [wiki list of users configuration](https://nixos.wiki/wiki/Configuration_Collection). I scouted few, and found one interesting.
 
@@ -144,21 +146,21 @@ Now I can start splitting my one giant `base.nix` into multiple "feature" config
 
 On one of forums dedicated to Linux I found a post saying: "all Linux systems should suppose to work like NixOS".
 
-### nix-shell and shell.nix
+{{h3|nix-shell|nix-shell and shell.nix}}
 
 We have to talk about another nice feature of NixOS. Due to its immutable concept, you can create subenvironments in your shell by creating `shell.nix` file in a given directory. Upon entering such directory and executing `nix-shell` you are taken into new shell that contains configuration defined in that `shell.nix` file: it can contain new packages, different configuration for already existing applications and so on. It effectively works like a subenvironment inside your system. It might be very elegant to have a clean system, and have everything configured in those subenvironments, but I find it an overkill, and prefer to use it only for some project's very specific requirements.
 
 `nix-shell` also allows to test packages without installing (or to use a package that you wish not to have installed forever). Using a shortcut `nix-shell -p <package_name>` you enter environment that contains given package, so you can play with it without installing. It works even with GUI apps, so in that regard it is much better than for example a Docker container.
 
-### Struggles
+{{h3|struggles|Struggles}}
 
-#### Multiple channels
+{{h4|multiple-channels|Multiple channels}}
 
 NixOS has multiple channels of packages. Initially I went with `stable`. But stable is quite old, so there is also `unstable`. It wasn't obvious to me at first, but unstable is rolling while stable is more of point/release-based. Unstable doesn't mean that things are breaking, it means that they are often upgraded.
 
 I decided to switch to `unstable` because not all packages very fresh enough (or simply not available) in stable. Fortunately it was easy, and required another system rebuild (this one took much longer, as it had to rebuild virtually everything).
 
-#### Flakes
+{{h4|struggles-flakes|Flakes}}
 
 I heard about *flakes* already, that they are new experimental feature. Apparently it's not new, and not that experimental already, as a lot of people are using them. Flakes are a concept built on top of a Nix package manager. They work as a function that accepts some input (for example package repository), and return an output (for example a part of a configuration), so in some sense they work very similar to a configuration file.
 
@@ -166,7 +168,7 @@ What's interesting about them, is that they are designed to be self-contained in
 
 I'm not using them at the moment, as they are not solving any particular issue that I have, break the idea of having single configuration file, and [might lead to overengineered system configuration](https://www.youtube.com/watch?v=D52UuOtZ1R0) unless used with caution.
 
-#### Packages
+{{h4|struggles-packages|Packages}}
 
 All NixOS packages are managed through its [GitHub repository](https://github.com/NixOS/nixpkgs). And the repository... is enormous. At the moment of writing there are over 9391 issues open (33779 closed), 6557 pull requests open (314425 closed) - **how to even manage that scale?**
 
@@ -176,7 +178,7 @@ Maybe I had bad luck, but you see, the issue is that on typical Linux distro eve
 
 It is also non-trivial to change/downgrade package version. You are usually stuck with version in the selected distribution channel (stable/unstable). And again - there NixOS-ways to handle that situation, that - again - are not beginner friendly.
 
-#### Dynamicly linked binaries from outside NixOS packages
+{{h4|struggles-linked-libraries|Dynamicly linked binaries from outside NixOS packages}}
 
 NixOS manages libraries and dependencies in its own way. It effectively means that if you simply download a binary that is dynamically linked it won't work in NixOS. I haven't checked *why exactly*, but I know *it is*, and it is **very problematic**.
 
@@ -186,7 +188,7 @@ Of course, there are some solutions to overcome that: you have to wrap your cust
 
 This is something for me to figure out.
 
-#### Learning curve
+{{h4|struggles-learning-curve|Learning curve}}
 
 Everything mentioned above makes NixOS having learning curve similar to normal distribution (sorry I'm slightly misusing the meme):
 
@@ -194,7 +196,7 @@ Everything mentioned above makes NixOS having learning curve similar to normal d
 
 I'm currently in the middle: have working configuration, but some things have rough edges, some are not solved at all.
 
-### Summary
+{{h3|summary|Summary}}
 
 NixOS met all my expectations without. Using Linux system I expect to have issues (that in comparison to Windows are solvable at least). Although there are a lot of struggles I have with NixOS I generally see that they are solvable, but all of them require dwelving into NixOS even more. **NixOS is a rabbit hole**. You always come up with ideas to improve, so it's definitely a system for tinkerers. Knowledge of NixOS ecosystem is extremely beneficial: you can achieve things unachievable in other distributions. But it doesn't carry over to other distributions. My improvements of a workflow are not usable by people not using NixOS (and on the other hand very easily usable by people on NixOS). NixOS is a walled-garden in some sense (I already made Apple comparison in this blogpost, didn't I?). You are forced to do everything Nix-way. I mean you don't have to, but if you don't you are somehow punished - sooner or later. It's not a system for masochists (like MacOS), but you have to have some willpower to make your way through. NixOS **is** changing your perspective on what an operating system might be, and I believe this change is irreversible.
 

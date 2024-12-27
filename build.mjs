@@ -1,3 +1,4 @@
+import { ok as assert } from 'node:assert';
 import { $, chalk, fs, glob, path } from "zx";
 
 const build = async () => {
@@ -33,7 +34,9 @@ const replaceTokens = ({ content, filePath }) => {
     const [token, ...args] = splitted;
 
     switch (token) {
-      case 'date': 
+      case 'date':
+        assert(args.length === 0 || args.length === 1);
+
         if (args.length === 0) {
           return getFileDate(filePath);
         } else {
@@ -41,12 +44,18 @@ const replaceTokens = ({ content, filePath }) => {
             path.join(path.dirname(filePath), args[0])
           );
         }
+      case 'toc':
+        assert(args.length === 0);
+
+        return getTableOfContent({ content });
       case 'h1':
       case 'h2':
       case 'h3':
       case 'h4':
       case 'h5':
       case 'h6':
+        assert(args.length === 2);
+        
         return getHeader(token, args[0], args[1]);
       default:
         return value;
@@ -69,6 +78,49 @@ const getFileDate = (path) => {
 const getHeader = (level, id, text) => {
   return `<${level} id="${id}"><a href="#${id}">#</a>${text}</${level}>`
 }
+
+const getTableOfContent = ({ content }) => {
+  const tokenMatches = content.match(/\{\{.*?\}\}/g);
+  /** @type{Array<{ level: number, text: string, id: string }} */
+  const headers = [];
+
+  for (const tokenMatch of tokenMatches) {
+    const splitted = tokenMatch.slice(2, -2).split('|');
+    const [token, ...args] = splitted;
+
+    switch (token) {
+      case 'h1':
+      case 'h2':
+      case 'h3':
+      case 'h4':
+      case 'h5':
+      case 'h6':
+        assert(args.length === 2);
+        
+        headers.push({
+          id: args[0],
+          text: args[1],
+          level: token.slice(1),
+        });
+      default:
+        continue;
+    }
+  }
+
+  if (headers.length === 0) {
+    return '';
+  }
+
+  return trimTemplateString(`
+    <ul>
+      ${headers.map(header => `
+        <li style="margin-left: ${Math.max(header.level - 3, 0) * 20}px"><a href="#${header.id}">${header.text}</a></li>
+      `).join('\n')}
+    </ul>
+  `);
+}
+
+const trimTemplateString = (input) => input.split('\n').map(line => line.trimStart()).join('\n');
 
 const mdToHtml = async ({ content, filePath }) => {
   if (filePath.endsWith('.md')) {

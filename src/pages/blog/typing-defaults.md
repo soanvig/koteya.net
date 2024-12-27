@@ -1,5 +1,7 @@
 ## Typing `defaults` function in TypeScript
 
+{{toc}}
+
 `defaults` function as found in [lodash/defaults](https://lodash.com/docs/#defaults) allows to copy properties from one object to another,
 as long as another object doesn't already contain these properties:
 
@@ -70,7 +72,7 @@ it can merge arrays, objects, merge multiple of those and so on.
 However in most cases we do not need all of that. We need to merge options like in an example given above. So let's try to type that function!
 As an addition we'll create our custom implementation.
 
-### Typing `defaults`
+{{h3|typing-defaults|Typing `defaults`}}
 
 We start by limiting the API to accept only two records:
 
@@ -141,7 +143,7 @@ export const defaults = <T extends Record<string, unknown>, S extends Record<str
 };
 ```
 
-### Typing `defaultsDeep`
+{{h3|typing-defaults-deep|Typing `defaultsDeep`}}
 
 `defaultsDeep` follows exactly the same logic, but recusively. Let's start with implementation:
 
@@ -251,7 +253,7 @@ export const defaultsDeep = <T extends Record<string, unknown>, S extends Record
   } as DefaultsDeepResult<T, S>;
 ```
 
-## Conclusion
+{{h3|conclusion|Conclusion}}
 
 Typing (and implementing) those functions was a nice excercise.
 We have a chance to play with recurise types, key remapping, and recursion itself to end up with very useful function, and reduce our dependency on external libraries.

@@ -1,5 +1,7 @@
 ## Frontend development with TypeScript and libraries, but no bundler
 
+{{toc}}
+
 [Vite](https://vitejs.dev/), [Webpack](https://webpack.js.org/), [Parcel](https://parceljs.org/), [esbuild](https://esbuild.github.io/), [Rollup](https://rollupjs.org/), and many more.
 How many tools one has to know to build a frontend application? What if those tools are not necessary? What if a simple frontend application could be created without those tools? Let's see how.
 
