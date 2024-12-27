@@ -1,0 +1,1 @@
+## Why I love JavaScript/TypeScript
