@@ -14,7 +14,7 @@ I asked myself: "how's that possible, and how would it be useful to me?". An ans
 
 To answer the former I had to personally test it. So I spun virtual machine with NixOS on the deck, and gave it a try.
 
-Falled in love immediately.
+Fallen in love immediately.
 
 ### Initial experience
 
@@ -160,9 +160,11 @@ I decided to switch to `unstable` because not all packages very fresh enough (or
 
 #### Flakes
 
-I heard about *flakes* already, that they are new experimental feature. Apparently it's not new, and not that experimental already, as a lot of people are using them. Flakes are a powerful feature that does something. They semms to be so powerful, so generic, and so ambiguous that I have no idea what they actually are, but they are omnipresent in NixOS community, so at some point I'm going to learn them.
+I heard about *flakes* already, that they are new experimental feature. Apparently it's not new, and not that experimental already, as a lot of people are using them. Flakes are a concept built on top of a Nix package manager. They work as a function that accepts some input (for example package repository), and return an output (for example a part of a configuration), so in some sense they work very similar to a configuration file.
 
-At this moment I simply ignore their existance. Some things seem to be easier with flakes, some things seem to be possible only with flakes, but I was able to do everything I wanted without using them, so let's keep things simple and barebones for now.
+What's interesting about them, is that they are designed to be self-contained in some sense: first and foremost by having a `lockfile` known from programming build tools. That allows each flake to have its own list of dependencies, with specific versions (that is normally not possible, because NixOS system configuration is global). On top of that, one flake can be extended by another one that can come even from an external source like GitHub. The idea behind them is to increase system modularity and reproducibility.
+
+I'm not using them at the moment, as they are not solving any particular issue that I have, break the idea of having single configuration file, and [might lead to overengineered system configuration](https://www.youtube.com/watch?v=D52UuOtZ1R0) unless used with caution.
 
 #### Packages
 
@@ -188,7 +190,7 @@ This is something for me to figure out.
 
 Everything mentioned above makes NixOS having learning curve similar to normal distribution (sorry I'm slightly misusing the meme):
 
-![programmer's journey of using NixOS](./nixos-journey-meme.webp)
+![programmer's journey of using NixOS](/assets/nixos-journey-meme.webp)
 
 I'm currently in the middle: have working configuration, but some things have rough edges, some are not solved at all.
 
@@ -196,6 +198,6 @@ I'm currently in the middle: have working configuration, but some things have ro
 
 NixOS met all my expectations without. Using Linux system I expect to have issues (that in comparison to Windows are solvable at least). Although there are a lot of struggles I have with NixOS I generally see that they are solvable, but all of them require dwelving into NixOS even more. **NixOS is a rabbit hole**. You always come up with ideas to improve, so it's definitely a system for tinkerers. Knowledge of NixOS ecosystem is extremely beneficial: you can achieve things unachievable in other distributions. But it doesn't carry over to other distributions. My improvements of a workflow are not usable by people not using NixOS (and on the other hand very easily usable by people on NixOS). NixOS is a walled-garden in some sense (I already made Apple comparison in this blogpost, didn't I?). You are forced to do everything Nix-way. I mean you don't have to, but if you don't you are somehow punished - sooner or later. It's not a system for masochists (like MacOS), but you have to have some willpower to make your way through. NixOS **is** changing your perspective on what an operating system might be, and I believe this change is irreversible.
 
-I couldn't recommend it more.
+**I couldn't recommend it more.**
 
 
