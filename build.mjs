@@ -90,7 +90,7 @@ const getFileDate = (path) => {
 }
 
 const getHeader = (level, id, text) => {
-  return `<${level} id="${id}"><a href="#${id}">#</a>${text}</${level}>`
+  return `<${level} id="${id}"><a href="#${id}">${'#'.repeat(level.slice(1) - 2)}</a>${text}</${level}>`
 }
 
 const getTableOfContent = ({ content }) => {
