@@ -101,6 +101,8 @@ For that we use [importmap](https://developer.mozilla.org/en-US/docs/Web/HTML/El
 
 This will tell the browser, than whenever it is instructed to import `lodash`, it should in fact load local path: `./lodash.min.js`.
 
+Import maps can also be used to define all sort of aliases.
+
 {{h4|libraries-ts|Libraries with TypeScript}}
 
 Now, TypeScript might not work with libraries. For `ESNext` modules (TypeScript configuration) it doesn't know where to look for them - they have to work in the browser which has different import resolution that TypeScript cannot automatically reason about.
@@ -125,27 +127,21 @@ Because paths corelate with `importmap`, they will be extremely useful when our 
 I almost forgot to mention that there is a CDN for ESM libraries called [esm.sh](https://esm.sh/#docs) that allows you to write imports using HTTP protocol.
 
 ```js
-import { common, createStarryNight } from 'https://esm.sh/@wooorm/starry-night@3?bundle';
-import { toDom } from 'https://esm.sh/hast-util-to-dom@4?bundle';
+import { groupBy } from 'https://esm.sh/lodash@4.17.21';
+```
 
-const starryNight = await createStarryNight(common)
-const prefix = 'language-'
+It might be used with importmaps and TypeScript. For TypeScript we might use `paths` again or add declaration file in our codebase:
 
-const nodes = Array.from(document.body.querySelectorAll('code.code-block'))
-
-for (const node of nodes) {
-  const className = Array.from(node.classList).find(function (d) {
-    return d.startsWith(prefix)
-  })
-  if (!className) continue
-  const scope = starryNight.flagToScope(className.slice(prefix.length))
-  if (!scope) continue
-  const tree = starryNight.highlight(node.textContent, scope)
-  node.replaceChildren(toDom(tree, {fragment: true}))
+```ts
+// lodash.d.ts
+// requires library with type definitions (or @types counterpart) installed locally
+declare module 'https://esm.sh/lodash@4.17.21' {
+  import * as Lodash from "lodash";
+  export = Lodash;
 }
 ```
 
-It might **very** useful for `importmap`, but I haven't tested it yet.
+One thing to note is that not all libraries cooporate properly with `esm.sh` (I'm looking at you, [PixiJS](https://pixijs.com/)). I didn't investigate why exactly.
 
 {{h3|summary|Summary}}
 
