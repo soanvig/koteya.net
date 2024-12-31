@@ -1,5 +1,6 @@
 - [ ] blog tags system
 - [ ] grammar check on build (installed `aspell aspell-en`, example: `aspell -l en_US -H check ./src/pages/blog/cli.html`)
+- [ ] allow blog assets
 - [x] page title should include blogpost title
 - [x] last update should be per file
 - [x] automated header links

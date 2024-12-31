@@ -143,7 +143,7 @@ declare module 'https://esm.sh/lodash@4.17.21' {
 }
 ```
 
-One thing to note is that not all libraries cooporate properly with `esm.sh` (I'm looking at you, [PixiJS](https://pixijs.com/)). I didn't investigate why exactly.
+One thing to note is that not all libraries cooporate properly with `esm.sh`. I didn't investigate why exactly.
 
 {{h3|summary|Summary}}
 

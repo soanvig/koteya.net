@@ -34,7 +34,7 @@ const build = async () => {
   }
 
   await $`mkdir -p ./build/assets`;
-  await $`cp -r ./src/assets/* ./build/assets`;
+  await $`cp -r ./src/static/* ./build/`;
   console.log(`${chalk.green.bold('Copy')} assets`);
 }
 
