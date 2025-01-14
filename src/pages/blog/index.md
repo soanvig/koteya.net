@@ -1,5 +1,6 @@
 ## Blog
 
+- [{{blogTitle|./typescript-subtyping.md}} ({{date|./typescript-subtyping.md}})](/blog/typescript-subtyping.html)
 - [{{blogTitle|./typing-defaults.md}} ({{date|./typing-defaults.md}})](/blog/typing-defaults.html)
 - [{{blogTitle|./nixos.md}} ({{date|./nixos.md}})](/blog/nixos.html)
 - [{{blogTitle|./frontend-esm.md}} ({{date|./frontend-esm.md}})](/blog/frontend-esm.html)
