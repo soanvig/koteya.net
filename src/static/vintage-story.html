@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vintage story server status</title>
+  <h1>
+    Vintage story server status
+  </h1>
+
+  <div id="error"></div>
+
+  <div id="content">
+    <div>Updated at: <strong id="updatedAt"></strong></div>
+    <div>Status: <strong id="status"></strong></div>
+    <div>
+      IP: <ul id="ip"></ul>
+    </div>
+  </div>
+</head>
+<body>
+  <script>
+    (async () => {
+      const result = await fetch('https://storage.googleapis.com/vintage-story-server-status/status.json', {})
+        .then(r => r.json())
+        .catch(e => {
+          document.querySelector('#error').innerHTML = 'Error loading data';
+          document.querySelector('#content').remove();
+          return Promise.reject(e);
+        });
+
+      document.querySelector('#updatedAt').innerHTML = new Date(result.updatedAt).toLocaleString();
+      document.querySelector('#status').innerHTML = result.status;
+      
+      for (const ip of result.ip) {
+        const li = document.createElement('li');
+        li.innerHTML = ip;
+        document.querySelector('#ip').append(li);
+      }
+
+      console.log(result);
+    })()
+  </script>
+</body>
+</html>

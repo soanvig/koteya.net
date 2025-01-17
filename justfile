@@ -4,7 +4,7 @@ default:
 build:
   node ./build.mjs
 
-container-dev:
+container-dev: build
   podman run --replace -d --name koteya.net -v $"./Caddyfile:/etc/caddy/Caddyfile:Z" -v ./build:/var/www:Z -p 8080:80 docker.io/caddy
 
 container-build: build

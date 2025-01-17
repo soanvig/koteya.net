@@ -1,6 +1,11 @@
 # with koteya.net it doesn't work on Google Cloud Run
 # koteya.net, :80 {
 :80 {
+    handle_path /vintage-story {
+		root * /var/www/vintage-story.html
+		file_server
+	}
+
     root * /var/www
     encode gzip
     file_server
