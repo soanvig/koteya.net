@@ -3,22 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amarante&display=swap" rel="stylesheet">
   <title>Vintage story server status</title>
+  <style>
+    html {
+      width: 100%;
+      height: 100%;
+      background-color: #111;
+      background-image: url('/vintage-story-status-bg.webp');
+      background-position: center center;
+      background-size: cover;
+      color: #fff;
+      font: 32px 'Amarante', serif;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body {
+      text-align: center;
+      padding: 1em 2em;
+      background: rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.75);
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    .content-entry {
+      margin: 1em 0;
+    }
+  </style>
+</head>
+<body>
   <h1>
-    Vintage story server status
+    Vintage Story<br>koteya.net server
   </h1>
 
   <div id="error"></div>
 
   <div id="content">
-    <div>Updated at: <strong id="updatedAt"></strong></div>
-    <div>Status: <strong id="status"></strong></div>
-    <div>
-      IP: <ul id="ip"></ul>
-    </div>
+    <div class="content-entry">Updated at: <strong id="updatedAt"></strong></div>
+    <div class="content-entry">Status: <strong id="status"></strong></div>
+    <ul class="content-entry" id="ip"></ul>
   </div>
-</head>
-<body>
+
   <script>
     (async () => {
       const result = await fetch('https://storage.googleapis.com/vintage-story-server-status/status.json', {})
@@ -30,11 +64,11 @@
         });
 
       document.querySelector('#updatedAt').innerHTML = new Date(result.updatedAt).toLocaleString();
-      document.querySelector('#status').innerHTML = result.status;
+      document.querySelector('#status').innerHTML = `${result.status.at(0).toUpperCase()}${result.status.slice(1)}`;
       
       for (const ip of result.ip) {
         const li = document.createElement('li');
-        li.innerHTML = ip;
+        li.innerHTML = `IP: <strong>${ip}</strong>`;
         document.querySelector('#ip').append(li);
       }
 

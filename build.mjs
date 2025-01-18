@@ -34,8 +34,8 @@ const build = async () => {
   }
 
   await $`mkdir -p ./build/assets`;
+  console.log(`${chalk.green.bold('Copy')} statics`);
   await $`cp -r ./src/static/* ./build/`;
-  console.log(`${chalk.green.bold('Copy')} assets`);
 }
 
 const replaceTokens = ({ content, filePath }) => {
