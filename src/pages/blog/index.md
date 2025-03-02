@@ -1,5 +1,6 @@
 ## Blog
 
+- [{{blogTitle|./modal-editing-thoughts.md}} ({{date|./modal-editing-thoughts.md}})](/blog/modal-editing-thoughts.html)
 - [{{blogTitle|./typescript-subtyping.md}} ({{date|./typescript-subtyping.md}})](/blog/typescript-subtyping.html)
 - [{{blogTitle|./typing-defaults.md}} ({{date|./typing-defaults.md}})](/blog/typing-defaults.html)
 - [{{blogTitle|./nixos.md}} ({{date|./nixos.md}})](/blog/nixos.html)
