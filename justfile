@@ -4,6 +4,9 @@ default:
 build:
   node ./build.mjs
 
+watch:
+  watchexec -e html,md,css just build
+
 container-dev: build
   podman run --replace -d --name koteya.net -v $"./Caddyfile:/etc/caddy/Caddyfile:Z" -v ./build:/var/www:Z -p 8080:80 docker.io/caddy
 
