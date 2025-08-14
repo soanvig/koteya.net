@@ -54,6 +54,8 @@ const replaceTokens = ({ content, filePath }) => {
             path.join(path.dirname(filePath), args[0])
           );
         }
+      case 'buildDate':
+        return getBuildDate();
       case 'toc':
         assert(args.length === 0);
 
@@ -87,6 +89,12 @@ const getFileDate = (path) => {
 
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
   }
+}
+
+const getBuildDate = () => {
+  const date = new Date();
+
+  return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
 }
 
 const getHeader = (level, id, text) => {
