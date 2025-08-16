@@ -1,6 +1,16 @@
 ## Feed
 
 <div class="feed content">
+  <article id="feed_2025_08_17">
+    <a href="#feed_2025_08_17" class="feed_time"><time datetime="2025-08-17">17.08.2025</time></a>
+    <div class="feed_box">
+      <p>The amount of blueprint copy-pasted AI-generated slop on YouTube is lately especially visibile when you search for philosophical topics.</p>
+      <p>As an example: I want to look for Shopenhauer's take on intelligence. Something easily-digestable.
+      Searching for "shopenhauer intelligence" returns me page of results out of which around 90% are similarly titled videos, with similarly looking miniature, with similarly sounding narrator, and the same slop having only 5% of variation in content.</p>
+      <p>Essentially this phenomena makes using Youtube impossible. Worse: it drowns the actual creators.</p>
+    </div>
+  </article>
+
   <article id="feed_2025_08_14">
     <a href="#feed_2025_08_14" class="feed_time"><time datetime="2025-08-14">14.08.2025</time></a>
     <div class="feed_box">
