@@ -1,4 +1,6 @@
 import { ok as assert } from 'node:assert';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { $, chalk, fs, glob, path } from "zx";
 
 const build = async () => {
@@ -56,6 +58,10 @@ const replaceTokens = ({ content, filePath }) => {
         }
       case 'buildDate':
         return getBuildDate();
+      case 'asset':
+        assert(args.length === 2)
+
+        return getAsset(args[0], args[1]);
       case 'toc':
         assert(args.length === 0);
 
@@ -99,6 +105,12 @@ const getBuildDate = () => {
 
 const getHeader = (level, id, text) => {
   return `<${level} id="${id}"><a href="#${id}">${'#'.repeat(level.slice(1) - 2)}</a>${text}</${level}>`
+}
+
+const getAsset = (finalPath, filePath) => {
+  const fileContent = readFileSync(filePath);
+  const md5sum = createHash('md5').update(fileContent).digest('hex')
+  return `${finalPath}?${md5sum}`;
 }
 
 const getTableOfContent = ({ content }) => {
