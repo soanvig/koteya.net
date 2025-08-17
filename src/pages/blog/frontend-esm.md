@@ -18,14 +18,14 @@ As you can see we are referencing `main.mjs` file. The `mjs` extension is a stan
 
 Then, we create `main.mjs` file, and `hello-world.mjs` file (that we will import using ESM syntax in `main.mjs` file).
 
-```js
+```ts
 // main.mjs
 import { helloWorld } from './hello-world.mjs'; // the extension here is required
 
 helloWorld();
 ```
 
-```js
+```ts
 // hello-world.mjs
 export const helloWorld = () => alert('Hello world!');
 ```
@@ -45,7 +45,7 @@ Now, the TypeScript. To have TypeScript working in the browser, we first have to
 
 For that, we are going to modify `tsconfig.json`:
 
-```js
+```ts
 // tsconfig.json
 {
   "compilerOptions": {
@@ -59,7 +59,7 @@ For that, we are going to modify `tsconfig.json`:
 
 Then, the `package.json`:
 
-```js
+```ts
 // package.json
 {
   ...,
@@ -82,7 +82,7 @@ I personally wrote a simple build script that runs TypeScript compilation, copie
 
 In our code we are probably using libraries in following format:
 
-```js
+```ts
 import { groupBy } from 'lodash';
 ```
 
@@ -111,7 +111,7 @@ Now, TypeScript might not work with libraries. For `ESNext` modules (TypeScript 
 
 But wait, we are already handling module resolution via `importmap`! That means we need TypeScript to be able to resolve only typing. And we can do it using `paths` in the `tsconfig.json` file:
 
-```js
+```ts
 // tsconfig.json
 {
   "paths": {
@@ -128,7 +128,7 @@ Because paths corelate with `importmap`, they will be extremely useful when our 
 
 I almost forgot to mention that there is a CDN for ESM libraries called [esm.sh](https://esm.sh/#docs) that allows you to write imports using HTTP protocol.
 
-```js
+```ts
 import { groupBy } from 'https://esm.sh/lodash@4.17.21';
 ```
 

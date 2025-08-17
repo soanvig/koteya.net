@@ -118,19 +118,20 @@ h2, h3, h4, h5 {
     margin: 2em 0;
     padding: 1em;
     border: 0;
+    scrollbar-color: var(--color-medium) var(--color-dark-2);
 
     & > code {
       display: block;
       border: 0;
       padding: 0;
       font-size: 1em;
-      line-height: 1.5;
+      line-height: 2;
     }
   }
 
   pre, code {
     font-family: 'JetBrains Mono Medium', monospace;
-    background: var(--color-dark-2);
+    background: var(--color-dark-2) !important; /** important to overwrite prims styling */
     color: var(--color-light-2);
   }
 

@@ -5,7 +5,7 @@
 `defaults` function as found in [lodash/defaults](https://lodash.com/docs/#defaults) allows to copy properties from one object to another,
 as long as another object doesn't already contain these properties:
 
-```js
+```ts
 import { defaults } from 'lodash';
 
 const defaultOptions = {
@@ -26,7 +26,7 @@ It's used usually to implement default options for a function with complex API.
 
 There is also a "deep" version: [lodash/defaultsDeep](https://lodash.com/docs/#defaultsDeep) that does the same, but recursively assigns nested properties:
 
-```js
+```ts
 import { defaultsDeep } from 'lodash';
 
 const defaultOptions = {

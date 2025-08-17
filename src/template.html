@@ -22,8 +22,8 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,500;1,500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,500;1,500&display=swap"></noscript>
 
-  <link rel="preload" href="https://esm.sh/@wooorm/starry-night@3/style/dark.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@3/style/dark.css"></noscript>
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-okaidia.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-okaidia.min.css"></noscript>
 </head>
 <body>
   <nav class="topbar">
@@ -43,24 +43,24 @@
     Last update of koteya.net: {{buildDate}}
   </footer>
 
-  <script async defer type="module">
-    import { common, createStarryNight } from 'https://esm.sh/@wooorm/starry-night@3?bundle';
-    import { toDom } from 'https://esm.sh/hast-util-to-dom@4?bundle';
+  <script>
+    window.Prism = window.Prism || {};
+    window.Prism.manual = true;
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-typescript.min.js"></script>
+  <script>
+    const langMap = {
+      ts: 'typescript'
+    }
+    const codeBlocks = document.querySelectorAll('pre[lang]');
 
-    window.addEventListener('load', async () => {
-      const starryNight = await createStarryNight(common)
+    for (const codeBlock of codeBlocks) {
+      const lang = codeBlock.getAttribute('lang');
+      codeBlock.classList.add(`language-${langMap[lang]}`);
+    }
 
-      const nodes = Array.from(document.body.querySelectorAll('pre[lang]'))
-
-      for (const node of nodes) {
-        const lang = node.attributes.getNamedItem('lang')
-        if (!lang) continue
-        const scope = starryNight.flagToScope(lang.value)
-        if (!scope) continue
-        const tree = starryNight.highlight(node.textContent, scope)
-        node.replaceChildren(toDom(tree, {fragment: true}))
-      }
-    });
+    Prism.highlightAll();
   </script>
 </body>
 </html>
