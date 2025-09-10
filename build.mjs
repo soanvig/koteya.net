@@ -1,7 +1,7 @@
 import { ok as assert } from 'node:assert';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { $, chalk, fs, glob, path } from "zx";
+import { $, chalk, fs, glob, path, ProcessOutput } from "zx";
 
 const build = async () => {
   const target = './build';
@@ -162,9 +162,16 @@ const getBlogPageTitle = ({ filePath }) => {
   }
 
   const prefix = '## ';
-  const { stdout: header } = $.sync`grep -m 1 ${prefix} ${filePath}`;
+  try {
+    const { stdout: header } = $.sync`grep -m 1 ${prefix} ${filePath}`;
+    return header.replace(prefix, '').trim();
+  } catch (e) {
+    if (e instanceof ProcessOutput) {
+      throw new Error(`Error encountered in grepping for header ## in file ${filePath}`);
+    }
 
-  return header.replace(prefix, '').trim();
+    throw e;
+  }
 }
 
 const mdToHtml = async ({ content, filePath }) => {
