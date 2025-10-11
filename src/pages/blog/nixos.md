@@ -192,7 +192,7 @@ This is something for me to figure out.
 
 Everything mentioned above makes NixOS having learning curve similar to normal distribution (sorry I'm slightly misusing the meme):
 
-![programmer's journey of using NixOS](/assets/nixos-journey-meme.webp)
+![programmer's journey of using NixOS]({{asset|/blog/nixos-journey-meme.webp|./src/pages/blog/nixos-journey-meme.webp}})
 
 I'm currently in the middle: have working configuration, but some things have rough edges, some are not solved at all.
 

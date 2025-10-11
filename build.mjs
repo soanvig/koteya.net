@@ -15,7 +15,7 @@ const build = async () => {
     await $`mkdir -p ${dir}`;
 
     const content = await fs.readFile(pagePath, 'utf-8');
-    const withParsedTokens = replaceTokens({ content, filePath: pagePath });
+    const withParsedTokens = replaceTokens({ target, content, filePath: pagePath });
     const withHtml = await mdToHtml({ content: withParsedTokens, filePath: pagePath });
     const withTemplate = template
       .replace('{{page}}', () => withHtml) // fn to avoid $& replacement pattern
@@ -28,19 +28,18 @@ const build = async () => {
           return `koteya.net`;
         }
       });
-    const final = replaceTokens({ content: withTemplate, filePath: pagePath });
+    const final = replaceTokens({ target, content: withTemplate, filePath: pagePath });
 
     await fs.writeFile(path.join(target, fileName), final, 'utf-8');
 
     console.log(`${chalk.green.bold('Build')} ${pagePath}`);
   }
 
-  await $`mkdir -p ./build/assets`;
-  console.log(`${chalk.green.bold('Copy')} statics`);
-  await $`cp -r ./src/static/* ./build/`;
+  console.log(`${chalk.green.bold('Copy')} ./src/static`);
+  await $`cp -r ./src/static/* ./build`;
 }
 
-const replaceTokens = ({ content, filePath }) => {
+const replaceTokens = ({ target, content, filePath }) => {
   return content.replace(/\{\{.*?\}\}/g, (value) => {
     const splitted = value.slice(2, -2).split('|');
     const [token, ...args] = splitted;
@@ -61,7 +60,7 @@ const replaceTokens = ({ content, filePath }) => {
       case 'asset':
         assert(args.length === 2)
 
-        return getAsset(args[0], args[1]);
+        return getAsset(target, args[0], args[1]);
       case 'toc':
         assert(args.length === 0);
 
@@ -107,9 +106,15 @@ const getHeader = (level, id, text) => {
   return `<${level} id="${id}"><a href="#${id}">${'#'.repeat(level.slice(1) - 2)}</a>${text}</${level}>`
 }
 
-const getAsset = (finalPath, filePath) => {
+const getAsset = (target, finalPath, filePath) => {
   const fileContent = readFileSync(filePath);
-  const md5sum = createHash('md5').update(fileContent).digest('hex')
+  const md5sum = createHash('md5').update(fileContent).digest('hex');
+
+  const finalPathWithTarget = path.join(target, finalPath);
+
+  $.sync`mkdir -p ${path.dirname(finalPathWithTarget)}`;
+  $.sync`cp ${filePath} ${finalPathWithTarget}`
+
   return `${finalPath}?${md5sum}`;
 }
 
