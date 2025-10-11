@@ -1,6 +1,23 @@
 ## Feed
 
 <div class="feed content">
+  <article id="feed_2025_10_12">
+    <a href="#feed_2025_10_12" class="feed_time"><time datetime="2025-10-12">12.10.2025</time></a>
+    <div class="feed_box">
+      <p>Am I the only one who somtimes likes to listen to music either sped up or slowed down? Some songs benefit exceptionally from that!</p>
+      <p>I'm talking here about <em>proper</em> speed change: that doesn't distort the sound, which is by lower/increasing pitch (audio physics, unfortunately). <a href="https://github.com/mpv-player/mpv">mpv</a> allows that. Just spin up terminal, run mpv as below and control speed with square brackets keys.</p>
+      <pre>
+<code>mpv \
+  -af-add=scaletempo=speed=both \
+  -audio-pitch-correction=no \
+  --no-audio-display \
+  {filePath}
+</code>
+      </pre>
+      <p>Does this trigger vinyl fans?</p>
+    </div>
+  </article>
+
   <article id="feed_2025_08_17">
     <a href="#feed_2025_08_17" class="feed_time"><time datetime="2025-08-17">17.08.2025</time></a>
     <div class="feed_box">
