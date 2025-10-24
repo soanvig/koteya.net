@@ -26,4 +26,4 @@ deploy-gcloud: build container-build
   gcloud run deploy koteyanet --port=80 --region=europe-west4 --image=europe-west4-docker.pkg.dev/private-cloud-291619/koteyanet/koteya.net
 
 serve:
-  pnpm serve ./build
+  pnpm live-server ./build

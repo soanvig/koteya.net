@@ -1,6 +1,6 @@
 {
 	"devDependencies": {
-		"zx": "^8.2.4",
-		"serve": "^14.2.4"
+		"live-server": "^1.2.2",
+		"zx": "^8.2.4"
 	}
 }

@@ -1,24 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&family=Love+Ya+Like+A+Sister&display=swap');
+
 :root {
   --color-light: #fff;
   --color-light-2: #ccc;
   --color-medium: #777;
   --color-dark: #0F1113;
   --color-dark-2: #0d0f0f;
-  --color-primary: #30fc82;
+  --color-primary: #e2008b;
+  --font-deco: 'Love Ya Like A Sister';
+  --font-mono: 'Kode Mono';
 }
 
 html {
   color: var(--color-light);
   background: var(--color-dark);
-  background-image: url('/assets/what-the-hex-dark.png');
+  height: 100%;
+  background-image: url('/assets/gloom.jpg');
   background-attachment: fixed;
-  font-family: sans-serif;
+  background-size: cover;
+  background-position: center center;
+  font-family: var(--font-mono);
 }
 
 body {
-  max-width: 800px;
+  max-width: 950px;
   margin: 1em auto;
-  padding: 1em;
+  padding: 2em;
   position: relative;
 }
 
@@ -28,8 +35,11 @@ body {
 
   display: flex;
   justify-content: space-between;
+}
 
-  font-family: 'JetBrains Mono Medium', monospace;
+.topbar h1 {
+  text-transform: uppercase;
+  font-family: var(--font-deco), monospace;
 }
 
 .deco {
@@ -67,7 +77,8 @@ body {
 }
 
 h1, h2, h3, h4, h5 {
-  font-family: 'JetBrains Mono Medium', monospace;
+  font-family: var(--font-deco), monospace;
+  text-shadow: 0px 0px 3px var(--color-primary);
 }
 
 h1 a {
@@ -75,7 +86,6 @@ h1 a {
 }
 
 h2, h3, h4, h5 {
-  margin-top: 1.5em;
   margin-bottom: 0.5em;
   padding: 0.5em 0;
 
@@ -90,10 +100,12 @@ h2, h3, h4, h5 {
 }
 
 .content {
+  background: color-mix(in srgb, var(--color-dark-2) 80%, transparent);
+  padding: 1em 2em 2em;
+
   p {
-    text-align: justify;
     margin-bottom: 1em;
-    line-height: 2;
+    line-height: 1.75;
   }
   
   .disclaimer {
@@ -130,7 +142,7 @@ h2, h3, h4, h5 {
   }
 
   pre, code {
-    font-family: 'JetBrains Mono Medium', monospace;
+    font-family: var(--font-mono), monospace !important; /** important to overwrite prims styling */
     background: var(--color-dark-2) !important; /** important to overwrite prims styling */
     color: var(--color-light-2);
   }
@@ -165,16 +177,13 @@ h2, h3, h4, h5 {
   gap: 2em;
 
   article {
-    max-width: 600px;
     display: flex;
     flex-direction: column;
   }
 
   .feed_box {
     padding: 2em;
-    background: color-mix(in srgb, var(--color-dark-2) 50%, transparent);
     border: 1px solid var(--color-light);
-    border-radius: 1em 0 1em 1em;
   }
 
   article:target .feed_box {
@@ -209,9 +218,10 @@ h2, h3, h4, h5 {
     position: absolute;
     left: calc(100% + 2em);
     width: 300px;
-    padding: 1em 0 1em 2em;
+    padding: 1em 1em 1em 2em;
     border-left: 2px solid var(--color-primary);
     margin-top: -50px;
+    background: color-mix(in srgb, var(--color-dark-2) 80%, transparent);
   }
 }
 

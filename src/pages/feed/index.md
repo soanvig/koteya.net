@@ -1,6 +1,6 @@
 ## Feed
 
-<div class="feed content">
+<div class="feed">
   <article id="feed_2025_10_12">
     <a href="#feed_2025_10_12" class="feed_time"><time datetime="2025-10-12">12.10.2025</time></a>
     <div class="feed_box">
