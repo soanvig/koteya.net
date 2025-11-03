@@ -34,6 +34,10 @@ All good until they have content. In that case the content falls out alongside t
 
 Carry On mods allows you to pick up such chest/barrel/vessel with its entire content as long as you have both hands free, and place it in new place. You are not able to run while carrying a block, but that's not a problem as usually you use the mod to reorganize your base.
 
+<video controls>
+  <source src="{{asset|/vintage-story/mods/carry-on.webm|./src/pages/vintage-story/mods/carry-on.webm}}" type="video/webm" />
+</video>
+
 {{h3|chisel-tools|QP's Chisel Tools - upgraded chiseling}}
 
 [QP's Chisel Tools](https://mods.vintagestory.at/chiseltools) expands the idea of chiseling (shaping custom blocks with hammer and a chisel).
