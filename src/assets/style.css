@@ -10,7 +10,7 @@
 html {
   color: var(--color-light);
   background: var(--color-dark);
-  background-image: url('/assets/what-the-hex-dark.png');
+  background-image: url('{{asset|./what-the-hex-dark.png}}');
   background-attachment: fixed;
   font-family: sans-serif;
 }
@@ -79,7 +79,7 @@ h2, h3, h4, h5 {
   margin-bottom: 0.5em;
   padding: 0.5em 0;
 
-  &:target {
+  &:has(a:target) {
     outline: 1px dotted var(--color-primary);
   }
 
@@ -87,6 +87,18 @@ h2, h3, h4, h5 {
     display: inline-block;
     padding: 0 0.5em;
   }
+}
+
+h2 a::before {
+  content: '#';
+}
+
+h3 a::before {
+  content: '##';
+}
+
+h4 a::before {
+  content: '###';
 }
 
 .content {

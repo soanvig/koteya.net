@@ -1,4 +1,4 @@
-# Modal editing thoughts (TUI editors rant)
+## Modal editing thoughts (TUI editors rant)
 
 I'm a programmer, and I use *VS Code* every day. I like its compromise between simplicity and useful built-in features. I **actually** like that it uses browser-engine for rendering, as browser-engine rendering is the best in the world for GUIs. But that's the problem - I am not a huge fun of GUIs.
 
@@ -24,7 +24,7 @@ Modal editing means that during workflow user switches between *modes*:
 one usually dedicated for navigating around and applying modifications (replace, remove, etc.), and one for inserting characters.
 </small>
 
-## Modal editing
+### Modal editing
 
 But Vim has modal editing, it's inescapable - and I absolutely hate it.
 
@@ -51,7 +51,7 @@ Considering that context: is modal-editing for me? Is it worth investing time? N
 
 Any time I see a video or comments recommending vim, when it comes to modal editing everybody seems to make a display of completely pointless text-manipulation that I cannot imagine using in practice. Even if useful, people seem to be able to achieve such things in Emacs (which doesn't have modal editing), so it's not related to the modal editing itself.
 
-## Desired state of things
+### Desired state of things
 
 I wish there was a TUI editor, suitable for coding, that doesn't require modal editing. There is Emacs, but it has a lot of legacy baggage, has insane defaults, and - this is a skill issue - requires knowledge of Emacs LISP language I can't get through. On the other hand, there is Helix, which would be perfect if it was suitable for non-modal workflow. Although technically I can configure all the commands to be non-modal, first of all that doesn't get rid of modes, and secondly there is a lot of friction nevertheless.
 
