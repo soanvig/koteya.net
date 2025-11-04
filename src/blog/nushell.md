@@ -12,7 +12,7 @@
 It claims to provide ease of programming through its custom non-[POSIX](https://en.wikipedia.org/wiki/POSIX) compliant language (more on that later). In this blog post I'll explain its basics, and share my thoughts on utilizing Nushell as a daily driver. Note, that the more I use it the more I like, so this blog post is also meant to convince the reader to try Nushell out.
 
 
-{{h3|basics|The basics - structured data}}
+### The basics - structured data
 
 
 In typical shell like *Bash*, *zsh* or *Fish* commands execute and return their output to the shell, where it is further processed through a command *pipeline*, saved in variable or just printed to the console. Nushell takes similar approach here. **The difference** is in *what* commands accept as an input, and return as an output. In all POSIX compliant shells (and most non-POSIX like Fish) everything is a text - simple list of characters, that don't encode any structured data. Some information is computed in one program, then converted into text, and if piped to another program it's that program's job to decode that text information for further processing.
@@ -79,12 +79,12 @@ And that is exactly what Nushell is doing: has support for structured data. It s
 The output is now formatted not as a table but a list. The code we wrote is more declarative and readable, and doesn't depend on arbitrary things like column separator and column order.
 
 
-{{h3|features|Features}}
+### Features
 
 
 Before talking about Nushell's [pitfalls](#pitfalls) I would like to quickly go through some of its features
 
-{{h4|features-repl|Interactive shell (REPL)}}
+#### Interactive shell (REPL)
 
 As demonstrated above Nushell is very useful when used as interactive shell (directly in a terminal emulator) for writing simple scripts. The language is expressive, and with the structured data and helper functions it is easy (and somewhat intuitive) to get the results we expect. It also is able to display the results in pretty-printed format (colored and structured). On top of that it can integrate with command-completion systems (like [Carapace](https://github.com/carapace-sh/carapace-bin), or even Fish).
 
@@ -101,7 +101,7 @@ As demonstrated above Nushell is very useful when used as interactive shell (dir
 
 One of the most interesting features available to Nushell's REPL are [hooks](https://www.nushell.sh/book/hooks.html). They can run certain code in configured situations. One use-case that I think might be the most powerful is the ability to track environment variables changes (`PWD` in particular) that allows to run code when entering or exiting a directory. It's up to one's imagination to find out how it can improve productivity. Check out Nushell's docs for more examples.
 
-{{h4|features-commands|Built-in commands}}
+#### Built-in commands
 
 Nushell has impressive number of [built-in commands](https://www.nushell.sh/commands/) for writing shell programs. That includes:
 
@@ -115,7 +115,7 @@ Nushell has impressive number of [built-in commands](https://www.nushell.sh/comm
 
 and a lot, lot more. It's truly battery-included. Besides what's provided, it also supports plugins, and has growing community [writing scripts](https://github.com/nushell/nu_scripts).
 
-{{h3|pitfalls|Pitfalls}}
+### Pitfalls
 
 Nushell at current stage is not perfect. Its capabilities are impressive, but such number of features makes it harder to maintain.
 This results in bugs that can appear after an upgrade, or some things simply not working consistently or as one may expect.

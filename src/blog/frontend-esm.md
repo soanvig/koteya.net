@@ -39,7 +39,7 @@ pnpm serve . // the directory where index.html can be found
 
 Upon entering `http://localhost:3000` (default `serve` port) the alert is executed as expected:
 
-{{h3|typescript|TypeScript}}
+### TypeScript
 
 Now, the TypeScript. To have TypeScript working in the browser, we first have to have it working with ESM at all.
 
@@ -72,7 +72,7 @@ And finally we have to convert our files' extension from `mjs` to `mts`.
 
 At this point, after running `tsc` compiler, we should get our `public` directory populated with `mjs` files ready to be imported in the browser as described in the previous section.
 
-{{h3|libraries|Libraries}}
+### Libraries
 
 If one is using a bundler, all the libraries installed via package manager, and imported into source code, will be automatically *bundled* into JavaScript code. Without a bundler it has to be done *manually*.
 
@@ -105,7 +105,7 @@ This will tell the browser, than whenever it is instructed to import `lodash`, i
 
 Import maps can also be used to define all sort of aliases.
 
-{{h4|libraries-ts|Libraries with TypeScript}}
+#### Libraries with TypeScript
 
 Now, TypeScript might not work with libraries. For `ESNext` modules (TypeScript configuration) it doesn't know where to look for them - they have to work in the browser which has different import resolution that TypeScript cannot automatically reason about.
 
@@ -124,7 +124,7 @@ Now, whenever we import `lodash`, TypeScript will know where its declaration fil
 
 Because paths corelate with `importmap`, they will be extremely useful when our app grows.
 
-{{h3|esm-sh|esm.sh}}
+### esm.sh
 
 I almost forgot to mention that there is a CDN for ESM libraries called [esm.sh](https://esm.sh/#docs) that allows you to write imports using HTTP protocol.
 
@@ -145,6 +145,6 @@ declare module 'https://esm.sh/lodash@4.17.21' {
 
 One thing to note is that not all libraries cooporate properly with `esm.sh`. I didn't investigate why exactly.
 
-{{h3|summary|Summary}}
+### Summary
 
 I'm not saying that bundlers are not useful, they certainly are. They manage assets, are usually bullet-proof, offer hot reloading, optimizations etc. But sometimes they are introduced when there is no actual need for them. Sometimes it's just enough to use things introduced by web standards only. The solution presented above *works*, but in certain cases it might be annoying (like in RxJS library case, which offers ESM build that you can copy, but it is invalid - it is not single-file build, and relative imports don't have extensions in paths, which makes that build unusuable for web). One might have to think hard around problems. There is beauty in that minimalistic approach, but it might not be for everyone. Hopefully JavaScript ecosystem and web standards will evolve to a point, when there will be no drawbacks, and all of that complex tooling will become obsolete.

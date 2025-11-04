@@ -72,7 +72,7 @@ it can merge arrays, objects, merge multiple of those and so on.
 However in most cases we do not need all of that. We need to merge options like in an example given above. So let's try to type that function!
 As an addition we'll create our custom implementation.
 
-{{h3|typing-defaults|Typing `defaults`}}
+### Typing `defaults`
 
 We start by limiting the API to accept only two records:
 
@@ -143,7 +143,7 @@ export const defaults = <T extends Record<string, unknown>, S extends Record<str
 };
 ```
 
-{{h3|typing-defaults-deep|Typing `defaultsDeep`}}
+### Typing `defaultsDeep`
 
 `defaultsDeep` follows exactly the same logic, but recusively. Let's start with implementation:
 
@@ -253,7 +253,7 @@ export const defaultsDeep = <T extends Record<string, unknown>, S extends Record
   } as DefaultsDeepResult<T, S>;
 ```
 
-{{h3|conclusion|Conclusion}}
+### Conclusion
 
 Typing (and implementing) those functions was a nice excercise.
 We have a chance to play with recurise types, key remapping, and recursion itself to end up with very useful function, and reduce our dependency on external libraries.

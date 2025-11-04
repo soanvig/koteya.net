@@ -7,7 +7,7 @@ However, I also love strictly typed languages (or actually hate dynamically type
 
 And I have a problem.
 
-{{h3|problem|The problem}}
+### The problem
 
 <small class="disclaimer">
   In this blogpost I'll use words "type" and "object" interchangebly, as sometimes word *type* might be too general.
@@ -57,7 +57,7 @@ At this point, we might want to have a general system of handling registration f
 
 And here the problem starts...
 
-{{h3|explicit-types|Explicitly defining types}}
+### Explicitly defining types
 
 ```ts
 const generalSetUserDetails = (process: RegisterCompanyUserProcess | RegisterAdminUserProcess, details: UserDetails) => {
@@ -74,7 +74,7 @@ Explicitly definining types is fine for a while. If we had 10 processes, then it
 
 If we decide that any of these issues is a real problem to us, we might want to investigate other solutions.
 
-{{h3|interface|Interface}}
+### Interface
 
 Interfaces are a way to set given constraints on a type:
 
@@ -118,7 +118,7 @@ const processConstructors = [
 
 What choices do we have?
 
-{{h3|check-implementation|Check implementation directly}}
+### Check implementation directly
 
 Because we know we are looking for `HasUserDetails`, and that it implements `setUserDetails` we might check if such property is available in the constructor:
 
@@ -148,9 +148,9 @@ class RegisterCompanyUserProcess implements HasUserDetails {
 
 But that's ugly as hell, as we would have to add this strange field to every class that implements `HasUserDetails`, and we cannot check constructor anymore, because that field gets initiated together with an instance of a class.
 
-{{h3|runtime-descriptor|Runtime descriptor}}
+### Runtime descriptor
 
-{{h4|static-property|Static property}}
+#### Static property
 
 We can add some sort of a category to our process class:
 
@@ -172,7 +172,7 @@ But that creates a centralized store of types (`ProcessCategory`) which is not v
 and it is not connected to `HasUserDetails` interface. Some might set `ProcessCategory.CartProcess` on `RegisterCompanyUserProcess`.
 There is no way to connect static property with interface, because class interface describes **instance of a class**, and static property describes **constructor of a class**.
 
-{{h4|instance-property|Instance property}}
+#### Instance property
 
 We could move category to interface:
 
@@ -199,7 +199,7 @@ const isUserDetailsProcessCtor = (processCtor: Ctor<{ category: ProcessCategory 
 
 But that's impossible to implement for process constructor, because the instance field `category` is not set yet. Thus we are limiting checking process type to checking instances only.
 
-{{h4|inheritance|Inheritance}}
+#### Inheritance
 
 We could make `HasUserDetails` an abstract class. That way we can define required type, and at the same time provide a runtime value that can be checked both in a constructor and instance:
 
@@ -230,7 +230,7 @@ That works almost perfectly, except for one problem: JavaScript doesn't allow to
 
 Also, if we want to create a `constructor` in child class, we would have to explictly make call to `super()` (although TypeScript will remind us about it).
 
-{{h4|instance-constructor-decorator|Instance and constructor decorator}}
+#### Instance and constructor decorator
 
 We could set some value on constructor, and ensure typing at the same time, using a decorator:
 
@@ -283,7 +283,7 @@ class RegisterCompanyUserProcess implements HasUserDetails {
 ...and have a complete solution for our required functionality, without sacrificing DX *that much*
 (we still sacrifice it slightly by putting a soft requirement of defining type in two places: decorator and `implements`).
 
-{{h3|summary|Summary}}
+### Summary
 
 Described problem and solutions is something I went through in not one but few of my projects. Whenever I wanted to generalize *behavior* I needed
 proper typing, and runtime checks. Because **by default** ([see TS transformers](https://github.com/woutervh-/typescript-is))
@@ -296,7 +296,7 @@ Firstly, it lacks connection between types and runtime - to do anything useful o
 
 Secondly, besides limited `extends` (which is JavaScript's syntax) it doesn't have any way of subtyping that is usable in runtime.
 
-{{h3|how-it-could-be-done|How it could be done}}
+### How it could be done
 
 But everything I described above could be done!
 TypeScript could emit more design metadata (for example list of implemented interface).

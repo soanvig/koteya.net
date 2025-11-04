@@ -2,10 +2,10 @@ default:
   just --list
 
 build:
-  node ./build.mjs
+  node --experimental-strip-types ./build.ts
 
 watch:
-  watchexec -e html,md,css just build
+  watchexec -e html,md,css,ts just build
 
 container-dev: build
   podman run --replace -d --name koteya.net -v $"./Caddyfile:/etc/caddy/Caddyfile:Z" -v ./build:/var/www:Z -p 8080:80 docker.io/caddy

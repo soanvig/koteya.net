@@ -2,13 +2,13 @@
 
 {{toc}}
 
-{{h3|prelude|Prelude}}
+### Prelude
 
 I think Vintage Story is really good game with lots of deep mechanics. However some of these
 are not deep enough or are too tedious. Fortunately there are mods to our rescue.
 Below I present list of hand picked mods that I play with, and I think are great addition to the game.
 
-{{h3|animal-cages|Animal Cages - moving animals around}}
+### Animal Cages - moving animals around
 
 [Animal Cages](https://mods.vintagestory.at/animalcages) mod allows to create small and medium-size 
 cages to capture animals. The recipe is copper age. Animal Cages is useful to create your first animal farm, and then manage it efficiently.
@@ -27,7 +27,7 @@ To use a cage attack animal with a cage in hand. Note that to catch with medium-
 
 To release animals from a cage place cage on the ground and destroy the cage. You will get the cage back, and the animal will be free.
 
-{{h3|carry-on|Carry On - moving containers around}}
+### Carry On - moving containers around
 
 [Carry On](https://mods.vintagestory.at/carryon) is a trivial mod you would never think of. Normally to pick up containers (chests, vessels, barrels) you have to destroy them.
 All good until they have content. In that case the content falls out alongside the container or - in case of liquids in a barrel - is entirely lost.
@@ -35,10 +35,10 @@ All good until they have content. In that case the content falls out alongside t
 Carry On mods allows you to pick up such chest/barrel/vessel with its entire content as long as you have both hands free, and place it in new place. You are not able to run while carrying a block, but that's not a problem as usually you use the mod to reorganize your base.
 
 <video controls>
-  <source src="{{asset|/vintage-story/mods/carry-on.webm|./src/pages/vintage-story/mods/carry-on.webm}}" type="video/webm" />
+  <source src="{{asset|./carry-on.webm}}" type="video/webm" />
 </video>
 
-{{h3|chisel-tools|QP's Chisel Tools - upgraded chiseling}}
+### QP's Chisel Tools - upgraded chiseling
 
 [QP's Chisel Tools](https://mods.vintagestory.at/chiseltools) expands the idea of chiseling (shaping custom blocks with hammer and a chisel).
 The mod is very vast in its functionality, but I'll focus on what I use it mostly for.

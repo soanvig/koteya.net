@@ -1,6 +1,9 @@
 {
+	"type": "module",
 	"devDependencies": {
-		"zx": "^8.2.4",
-		"live-server": "^1.2.2"
+		"@types/node": "^24.10.0",
+		"live-server": "^1.2.2",
+		"typescript": "^5.9.3",
+		"zx": "^8.2.4"
 	}
 }
