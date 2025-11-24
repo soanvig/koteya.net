@@ -8,7 +8,7 @@ watch:
   watchexec -e html,md,css,ts just build
 
 container-dev: build
-  podman run --replace -d --name koteya.net -v $"./Caddyfile:/etc/caddy/Caddyfile:Z" -v ./build:/var/www:Z -p 8080:80 docker.io/caddy
+  podman run --replace -d --name koteya.net -v ./Caddyfile:/etc/caddy/Caddyfile:Z -v ./build:/var/www:Z -p 8080:80 docker.io/caddy
 
 container-build: build
   podman build -t koteya.net .
@@ -16,7 +16,8 @@ container-build: build
 # Requires: podman system connection add --identity ~/.ssh/id_rsa vps ssh://mortimer@192.168.1.106:22
 deploy-vps: build container-build
   podman image scp koteya.net vps::
-  ssh vps 'podman run --replace -d --name koteya.net -v ~/caddy_data:/data -v ~/caddy_config:/config -p 80:80 -p 443:443 --restart always localhost/koteya.net'\
+  ssh vps 'podman network create --ignore vps'
+  ssh vps 'podman run --replace -d --name koteya.net --hostname website --network vps --restart always localhost/koteya.net'
 
 # Requires: gcloud and gcloud credential helper, should be run inside nix-shell
 deploy-gcloud: build container-build
