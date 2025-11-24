@@ -1,9 +1,10 @@
 import assert from 'node:assert';
-import crypto from 'node:crypto';
+import crypto, { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 import { $, glob, ProcessOutput } from "zx";
+import { tmpdir } from 'os';
 
 type FileInfo = {
   /** starts with dot */
@@ -26,12 +27,12 @@ const helpers = {
   trimTemplateString: (input: string) => input.split('\n').map(line => line.trimStart()).join('\n'),
   getFileDate: (path: string) => {
     const { stdout: fileDate } = $.sync`git log -1 --pretty="format:%ci" ${path}`;
-  
+
     if (fileDate.length === 0) {
       return new Date().toISOString();
     } else {
       const date = new Date(fileDate);
-  
+
       return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
     }
   },
@@ -50,7 +51,7 @@ const helpers = {
       if (e instanceof ProcessOutput) {
         throw new Error(`Error encountered in grepping for header ## in file ${path}`);
       }
-  
+
       throw e;
     }
   }
@@ -82,7 +83,7 @@ const markdownToHtml = (): PipeFn => async (context) => {
     const p = $`comrak --syntax-highlighting none --unsafe --gfm --header-ids ""`;
     p.stdin.write(context.memory.content);
     p.stdin.end();
-    
+
     const result = await p;
 
     return {
@@ -295,6 +296,31 @@ const wrapHtmlWithTemplate = (params: { templatePath: string }): PipeFn => {
   }
 }
 
+const compressImage = (): PipeFn => async (context) => {
+  if (context.memory.fileExt !== '.webp') {
+    return context;
+  }
+
+  const tmpFile = join(tmpdir(), `${randomUUID()}.webp`);
+  await writeFile(tmpFile, context.memory.content);
+
+  // Max 1000px width - no image exceeds that size anyway
+  // @TODO it's not the best possible algorithm but it's ok
+  await $`magick mogrify -resize 1000x\\> ${tmpFile}`;
+  const newContent = await readFile(tmpFile);
+
+  // Cleanup
+  await rm(tmpFile);
+
+  return {
+    ...context,
+    memory: {
+      ...context.memory,
+      content: newContent,
+    }
+  };
+};
+
 const runThroughPipeline = (pipeline: PipeFn[]): PipeFn => async (context) => {
   let updatedContext = context;
 
@@ -312,6 +338,7 @@ const pipeline: PipeFn[] = [
   tokenHtmlFileDate(),
   tokenHtmlFileTitle(),
   extractAsset(),
+  compressImage(),
   wrapHtmlWithTemplate({ templatePath: './src/template.html' }),
   cleanupPath({ sourceDir: './src' }),
   saveFile({ targetDir: './build' }),
@@ -319,7 +346,7 @@ const pipeline: PipeFn[] = [
 
 const run = async () => {
   await rm('./build', { recursive: true, force: true });
-  
+
   const pages = await glob('./src/**/*.{md,html,css}');
 
   for (const file of pages) {
@@ -328,4 +355,3 @@ const run = async () => {
 }
 
 await run();
-
