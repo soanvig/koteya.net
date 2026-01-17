@@ -3,6 +3,7 @@ default:
 
 build:
   node --experimental-strip-types ./build.ts
+  cp -r ./projects ./build/projects
 
 watch:
   watchexec -e html,md,css,ts just build
