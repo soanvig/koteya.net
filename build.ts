@@ -2,7 +2,7 @@ import assert from 'node:assert';
 import crypto, { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { basename, dirname, extname, join, resolve } from 'node:path';
+import { basename, dirname, extname, isAbsolute, join, resolve } from 'node:path';
 import { $, glob, ProcessOutput } from "zx";
 import { tmpdir } from 'os';
 
@@ -27,6 +27,17 @@ const helpers = {
   trimTemplateString: (input: string) => input.split('\n').map(line => line.trimStart()).join('\n'),
   getFileDate: (path: string) => {
     const { stdout: fileDate } = $.sync`git log -1 --pretty="format:%ci" ${path}`;
+
+    if (fileDate.length === 0) {
+      return new Date().toISOString();
+    } else {
+      const date = new Date(fileDate);
+
+      return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+    }
+  },
+  getFileCreationDate: (path: string) => {
+    const { stdout: fileDate } = $.sync`git log --diff-filter=A --follow -1 --pretty="format:%ci" -- ${path}`;
 
     if (fileDate.length === 0) {
       return new Date().toISOString();
@@ -212,6 +223,28 @@ const tokenHtmlFileDate = (): PipeFn => (context) => {
   };
 }
 
+const tokenHtmlFileCreationDate = (): PipeFn => (context) => {
+  if (context.memory.fileExt !== '.html') {
+    return context;
+  }
+
+  const content = context.memory.content.toString('utf-8');
+
+  const newContent = content.replaceAll(/({{fileCreationDate}})|({{fileCreationDate\|(.*)}})/g, (match, _a, _b, filePath) => {
+    const file = filePath ? join(context.original.fileDir, filePath) : context.original.filePath;
+
+    return helpers.getFileCreationDate(file);
+  });
+
+  return {
+    ...context,
+    memory: {
+      ...context.memory,
+      content: Buffer.from(newContent),
+    }
+  };
+}
+
 const tokenHtmlFileTitle = (): PipeFn => (context) => {
   if (context.memory.fileExt !== '.html') {
     return context;
@@ -234,6 +267,8 @@ const tokenHtmlFileTitle = (): PipeFn => (context) => {
   };
 }
 
+const assetCache: Record<string, { assetContext: FileContext, hash: string }> = {};
+
 const extractAsset = (): PipeFn => async (context) => {
   if (context.memory.fileExt !== '.html' && context.memory.fileExt !== '.css') {
     return context;
@@ -246,11 +281,21 @@ const extractAsset = (): PipeFn => async (context) => {
   for (const assetMatch of assetMatches) {
     const match = assetMatch[0]!;
     const assetPath = assetMatch[1]!;
-    const assetRootPath = join(context.original.fileDir, assetPath);
-    const assetFileContext = createFileContext(assetRootPath);
-    const processedAssetContext = await runThroughPipeline(pipeline)(assetFileContext);
-    const hash = helpers.calculateHashForBuffer(processedAssetContext.memory.content);
-    content = content.replaceAll(match, `/${processedAssetContext.memory.filePath}?${hash}`);
+    const assetRootPath = isAbsolute(assetPath) ? join(process.cwd(), assetPath) : join(context.original.fileDir, assetPath);
+
+    const { assetContext, hash } = await (async () => {
+      if (assetCache[assetRootPath]) {
+        return assetCache[assetRootPath];
+      }
+
+      const assetFileContext = createFileContext(assetRootPath);
+      const assetContext = await runThroughPipeline(pipeline)(assetFileContext);
+      const hash = helpers.calculateHashForBuffer(assetContext.memory.content);
+
+      return { assetContext, hash }
+    })();
+
+    content = content.replaceAll(match, `/${assetContext.memory.filePath}?${hash}`);
   }
 
   return {
@@ -277,8 +322,7 @@ const wrapHtmlWithTemplate = (params: { templatePath: string }): PipeFn => {
 
     if (builtTemplate === null) {
       const templateFileContext = createFileContext(params.templatePath);
-      const result = await runThroughPipeline(pipeline)(templateFileContext);
-      builtTemplate = result.memory.content.toString('utf-8');
+      builtTemplate = templateFileContext.memory.content.toString('utf-8');
     }
 
     const pageTitlePrefix = context.original.fileExt === '.md' ? helpers.getMarkdownPageTitle(context.original.filePath) : null;
@@ -334,12 +378,13 @@ const runThroughPipeline = (pipeline: PipeFn[]): PipeFn => async (context) => {
 const pipeline: PipeFn[] = [
   markdownToHtml(),
   tokenHtmlToC(),
+  wrapHtmlWithTemplate({ templatePath: './src/template.html' }),
   tokenHtmlBuildDate(),
   tokenHtmlFileDate(),
+  tokenHtmlFileCreationDate(),
   tokenHtmlFileTitle(),
   extractAsset(),
   compressImage(),
-  wrapHtmlWithTemplate({ templatePath: './src/template.html' }),
   cleanupPath({ sourceDir: './src' }),
   saveFile({ targetDir: './build' }),
 ];
